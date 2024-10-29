@@ -33,9 +33,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const hashedPassword = await hashPassword(password);
     const user = new User({ username, password: hashedPassword, role: role || Roles.USER });
     await user.save();
-    res.status(201).json({ message: 'Usuario registrado exitosamente' });
+    handleResponse(res, 201, { message: 'Usuario registrado exitosamente' });
   } catch (error) {
-    res.status(500).json({ message: 'Error al registrar el usuario', error });
+    handleError(res, error, 'Error al registrar el usuario');
   }
 };
 
@@ -46,24 +46,20 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      console.log('Usuario no encontrado');
-      res.status(404).json({ message: 'Usuario no encontrado' });
+      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
       return;
     }
 
     const isPasswordValid = await validatePassword(password, user.password);
-    console.log('¿La contraseña es válida?', isPasswordValid);
     if (!isPasswordValid) {
-      console.log('Contraseña incorrecta');
-      res.status(401).json({ message: 'Contraseña incorrecta' });
+      handleError(res, new Error('Contraseña incorrecta'), 'Contraseña incorrecta');
       return;
     }
 
     const token = generateToken(user._id.toString());
-    res.status(200).json({ message: 'Inicio de sesión exitoso', token, role: user.role });
+    handleResponse(res, 200, { message: 'Inicio de sesión exitoso', token, role: user.role });
   } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    res.status(500).json({ message: 'Error al iniciar sesión', error });
+    handleError(res, error, 'Error al iniciar sesión');
   }
 };
 
@@ -82,7 +78,8 @@ export const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return handleResponse(res, 404, { error: 'Usuario no encontrado' });
+      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
+      return;
     }
     handleResponse(res, 200, user);
   } catch (error) {
@@ -95,7 +92,8 @@ export const updateUser = async (req: Request, res: Response) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedUser) {
-      return handleResponse(res, 404, { error: 'Usuario no encontrado' });
+      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
+      return;
     }
     handleResponse(res, 200, updatedUser);
   } catch (error) {
@@ -108,10 +106,14 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
-      return handleResponse(res, 404, { error: 'Usuario no encontrado' });
+      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
+      return;
     }
-    res.status(204).send();
+    res.sendStatus(204);
   } catch (error) {
     handleError(res, error, 'Error al eliminar el usuario');
   }
 };
+
+
+
