@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import exchangeRateRoutes from './routes/exchangeRateRoutes';
-import { corsMiddleware } from './middleware/corsConfig';
+// import { corsMiddleware } from './middleware/corsConfig';
+import cors from 'cors';
 import userRoutes from './routes/userRoutes';
 import conversionRoutes from './routes/conversionRoutes';
 
@@ -12,7 +13,7 @@ const app: Application = express();
 app.use(express.json());
 
 // cors middleware
-app.use(corsMiddleware);
+app.use(cors());
 
 // Routes
 app.use('/api/exchange-rates', exchangeRateRoutes);
