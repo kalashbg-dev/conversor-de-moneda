@@ -10,6 +10,9 @@ const router = express.Router();
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
 
+// Ruta para confirmar el correo
+router.get('/confirm-email/:userId', userController.confirmEmail);
+
 // Rutas para gestionar usuarios (solo para ADMIN)
 const adminRouter = express.Router();
 adminRouter.use(authMiddleware, roleMiddleware([Roles.ADMIN]));
