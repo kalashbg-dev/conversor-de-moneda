@@ -5,9 +5,12 @@ import ExchangeRate from '../models/ExchangeRate';
 // Controlador para registrar conversiones
 export const logConversion = async (req: Request, res: Response): Promise<void> => {
  const { currencyFrom, currencyTo, amount } = req.body;
+ const newCurrencyFrom = currencyFrom.toUpperCase();
+ const newCurrencyTo = currencyTo.toUpperCase();
+
 // conseguir tasa de cambio
 try {
-    const exchangeRate = await ExchangeRate.findOne({ currencyFrom, currencyTo });
+    const exchangeRate = await ExchangeRate.findOne({ currencyFrom: newCurrencyFrom, currencyTo: newCurrencyTo });
 
     if (!exchangeRate) {
         res.status(404).json({ message: "No se encontro la tasa de cambio" });
@@ -16,8 +19,8 @@ try {
 
     const result = amount * exchangeRate.exchangeRate;
     const conversion = new Conversion({
-        currencyFrom,
-        currencyTo,
+        currencyFrom: newCurrencyFrom,
+        currencyTo: newCurrencyTo,
         amount,
         result
     });

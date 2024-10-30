@@ -1,3 +1,4 @@
+// middleware/authMiddleware.ts
 import { Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/jwt';
 import User from '../models/User';
@@ -8,7 +9,7 @@ export const authMiddleware = async (req: CustomRequest, res: Response, next: Ne
 
   if (!token) {
     res.status(403).json({ message: 'Token requerido' });
-    return; // Asegúrate de terminar aquí para evitar llamadas redundantes a next()
+    return; 
   }
 
   try {
@@ -21,7 +22,12 @@ export const authMiddleware = async (req: CustomRequest, res: Response, next: Ne
       return;
     }
 
-    req.role = user.role;
+    if (!user.isConfirmed) { // Verificar si el correo ha sido confirmado
+      res.status(403).json({ message: 'Correo no confirmado' });
+      return;
+    }
+
+    req.role = user.role; // Puedes almacenar el rol del usuario si es necesario
     next();
   } catch (error) {
     res.status(401).json({ message: 'Token inválido' });

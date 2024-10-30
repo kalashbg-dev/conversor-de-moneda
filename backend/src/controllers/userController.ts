@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import { generateToken } from '../utils/jwt';
+import { sendConfirmationEmail } from '../utils/mailer'; // Importar el servicio de correo
 import { Roles } from '../constants/roles';
 
 // Helper function to handle responses
@@ -27,15 +28,48 @@ const validatePassword = async (inputPassword: string, storedPassword: string): 
 
 // Register a new user
 export const registerUser = async (req: Request, res: Response) => {
-  const { username, password, role } = req.body;
+  const { username, password, email, name, role } = req.body;
 
   try {
     const hashedPassword = await hashPassword(password);
-    const user = new User({ username, password: hashedPassword, role: role || Roles.USER });
+    const user = new User({
+      username,
+      password: hashedPassword,
+      email,
+      name,
+      role: role || Roles.USER
+    });
     await user.save();
-    handleResponse(res, 201, { message: "Usuario registrado exitosamente" });
+
+    // Enviar el correo de confirmación
+    await sendConfirmationEmail(user.email, user._id.toString());
+
+    handleResponse(res, 201, { message: "Usuario registrado exitosamente. Por favor, confirma tu correo." });
   } catch (error) {
     handleError(res, error, "Error al registrar el usuario");
+  }
+};
+
+// Confirm email
+export const confirmEmail = async (req: Request, res: Response) => {
+  const { userId } = req.params; 
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
+      return;
+    }
+
+    if (user.isConfirmed) {
+      handleResponse(res, 200, { message: "El correo ya ha sido confirmado." });
+      return;
+    }
+
+    user.isConfirmed = true; 
+    await user.save();
+    handleResponse(res, 200, { message: "Correo confirmado exitosamente." });
+  } catch (error) {
+    handleError(res, error, "Error al confirmar el correo");
   }
 };
 
@@ -47,6 +81,11 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const user = await User.findOne({ username });
     if (!user) {
       handleError(res, new Error("Usuario no encontrado"), "Usuario no encontrado");
+      return;
+    }
+
+    if (!user.isConfirmed) {
+      handleError(res, new Error("Correo no confirmado"), "Correo no confirmado");
       return;
     }
 
@@ -114,6 +153,3 @@ export const deleteUser = async (req: Request, res: Response) => {
     handleError(res, error, 'Error al eliminar el usuario');
   }
 };
-
-
-
