@@ -16,8 +16,10 @@ const handleError = (res: Response, error: any, message: string) => {
 // Crear una nueva tasa de cambio
 export const createExchangeRate = async (req: Request, res: Response) => {
   const { currencyFrom, currencyTo, exchangeRate } = req.body;
+  const newCurrencyFrom = currencyFrom.toUpperCase();
+  const newCurrencyTo = currencyTo.toUpperCase();
   try {
-    const newExchangeRate = new ExchangeRate({ currencyFrom, currencyTo, exchangeRate });
+    const newExchangeRate = new ExchangeRate({ currencyFrom: newCurrencyFrom, currencyTo: newCurrencyTo, exchangeRate });
     const savedExchangeRate = await newExchangeRate.save();
     handleResponse(res, 201, savedExchangeRate);
   } catch (error) {
@@ -50,8 +52,15 @@ export const getExchangeRateById = async (req: Request, res: Response): Promise<
 
 // Actualizar una tasa de cambio
 export const updateExchangeRate = async (req: Request, res: Response): Promise<void> => {
+  const { currencyFrom, currencyTo, exchangeRate } = req.body;
+  const newCurrencyFrom = currencyFrom.toUpperCase();
+  const newCurrencyTo = currencyTo.toUpperCase();
   try {
-    const updatedExchangeRate = await ExchangeRate.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedExchangeRate = await ExchangeRate.findByIdAndUpdate(
+      req.params.id,
+      { currencyFrom: newCurrencyFrom, currencyTo: newCurrencyTo, exchangeRate },
+      { new: true }
+    );
     if (!updatedExchangeRate) {
       return Promise.reject(new Error('Tasa de cambio no encontrada'));
     }

@@ -9,6 +9,8 @@ import {
 import { authMiddleware } from '../middleware/authMiddleware';
 import { roleMiddleware } from '../middleware/roleMiddleware';
 import { Roles } from '../constants/roles';
+import { exchangeRateSchema } from '../validators/exchangeRateValidator';
+import { validateRequest } from '../middleware/validateRequest';
 
 const router = Router();
 
@@ -18,8 +20,7 @@ router.get('/:id', getExchangeRateById); // Acceso público para ver una tasa de
 
 // Rutas protegidas para crear, actualizar y eliminar tasas de cambio
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
-router.post('/', createExchangeRate);
-router.put('/:id', updateExchangeRate);
+router.post('/', validateRequest(exchangeRateSchema), createExchangeRate);
+router.put('/:id', validateRequest(exchangeRateSchema), updateExchangeRate);
 router.delete('/:id', deleteExchangeRate);
-
 export default router;
