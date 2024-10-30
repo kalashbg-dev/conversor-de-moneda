@@ -33,9 +33,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const hashedPassword = await hashPassword(password);
     const user = new User({ username, password: hashedPassword, role: role || Roles.USER });
     await user.save();
-    handleResponse(res, 201, { message: 'Usuario registrado exitosamente' });
+    handleResponse(res, 201, { message: "Usuario registrado exitosamente" });
   } catch (error) {
-    handleError(res, error, 'Error al registrar el usuario');
+    handleError(res, error, "Error al registrar el usuario");
   }
 };
 
@@ -46,20 +46,20 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado');
+      handleError(res, new Error("Usuario no encontrado"), "Usuario no encontrado");
       return;
     }
 
     const isPasswordValid = await validatePassword(password, user.password);
     if (!isPasswordValid) {
-      handleError(res, new Error('Contraseña incorrecta'), 'Contraseña incorrecta');
+      handleError(res, new Error("Contraseña incorrecta"), "Contraseña incorrecta");
       return;
     }
 
     const token = generateToken(user._id.toString());
-    handleResponse(res, 200, { message: 'Inicio de sesión exitoso', token, role: user.role });
+    handleResponse(res, 200, { message: "Inicio de sesión exitoso", token, role: user.role });
   } catch (error) {
-    handleError(res, error, 'Error al iniciar sesión');
+    handleError(res, error, "Error al iniciar sesión");
   }
 };
 
@@ -69,7 +69,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const users = await User.find();
     handleResponse(res, 200, users);
   } catch (error) {
-    handleError(res, error, 'Error al obtener los usuarios');
+    handleError(res, error, "Error al obtener los usuarios");
   }
 };
 

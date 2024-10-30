@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model, ObjectId } from 'mongoose';
 
 interface IUser extends Document {
-    _id: string;
+  _id: string;
   username: string;
   password: string;
   role: 'user' | 'admin';
@@ -24,6 +24,7 @@ const userSchema: Schema<IUser> = new Schema({
   }
 }, {
     timestamps: true,
+    versionKey: false
   });
 
 const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);

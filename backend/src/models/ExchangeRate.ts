@@ -1,7 +1,6 @@
-// src/models/ExchangeRate.ts
 import { Schema, model } from 'mongoose';
 
-interface IExchangeRate {
+interface IExchangeRate extends Document {
   currencyFrom: string;
   currencyTo: string;
   exchangeRate: number;
@@ -9,12 +8,22 @@ interface IExchangeRate {
 
 const exchangeRateSchema = new Schema<IExchangeRate>(
   {
-    currencyFrom: { type: String, required: true },
-    currencyTo: { type: String, required: true },
-    exchangeRate: { type: Number, required: true },
+    currencyFrom: { 
+      type: String, 
+      required: true 
+    },
+    currencyTo: { 
+      type: String, 
+      required: true 
+    },
+    exchangeRate: { 
+      type: Number, 
+      required: true 
+    },
   },
   {
-    timestamps: true,
+    timestamps: true, // enable timestamps
+    versionKey: false // disable __v
   }
 );
 

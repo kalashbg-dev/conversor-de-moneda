@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import exchangeRateRoutes from './routes/exchangeRateRoutes';
 import { corsMiddleware } from './middleware/corsConfig';
 import userRoutes from './routes/userRoutes';
+import conversionRoutes from './routes/conversionRoutes';
 
 const app: Application = express();
 
@@ -16,5 +17,6 @@ app.use(corsMiddleware);
 // Routes
 app.use('/api/exchange-rates', exchangeRateRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/conversions', conversionRoutes);
 
 export default app;

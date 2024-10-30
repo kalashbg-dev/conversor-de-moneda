@@ -66,10 +66,10 @@ export const deleteExchangeRate = async (req: Request, res: Response): Promise<v
   try {
     const deletedExchangeRate = await ExchangeRate.findByIdAndDelete(req.params.id);
     if (!deletedExchangeRate) {
-      return Promise.reject(new Error('Tasa de cambio no encontrada'));
+      return Promise.reject(new Error("Tasa de cambio no encontrada"));
     }
     res.status(204).send();
   } catch (error) {
-    handleError(res, error, 'Error al eliminar la tasa de cambio');
+    handleError(res, error, "Error al eliminar la tasa de cambio");
   }
 };
