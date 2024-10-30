@@ -1,4 +1,3 @@
-import './App.css'
 import { NextUIProvider } from '@nextui-org/react'
 import { useNavigate, useHref, Route, Routes } from 'react-router-dom'
 
