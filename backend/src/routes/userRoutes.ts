@@ -16,15 +16,11 @@ router.post('/login', validateRequest(authSchema), userController.loginUser)
 router.get('/confirm-email/:userId', userController.confirmEmail)
 
 // Rutas para gestionar usuarios (solo para ADMIN)
-const adminRouter = Router()
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN]))
 
 router.get('/', userController.getAllUsers)
 router.get('/:id', userController.getUserById)
 router.put('/:id', validateRequest(userSchema), userController.updateUser)
 router.delete('/:id', userController.deleteUser)
-
-// Apuntar las rutas del admin al router principal
-router.use('/admin', adminRouter)
 
 export default router
