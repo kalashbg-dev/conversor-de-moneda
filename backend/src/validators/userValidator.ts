@@ -1,43 +1,43 @@
-import Joi from 'joi'
+import Joi from 'joi';
+
+const stringRequired = (label: string) => ({
+    'string.base': `${label} debe ser una cadena.`,
+    'string.required': `${label} es requerido.`,
+});
+
+const stringMin = (label: string, min: number) => ({
+    'string.min': `${label} debe tener al menos ${min} caracteres.`,
+});
+
+const stringMax = (label: string, max: number) => ({
+    'string.max': `${label} debe tener un máximo de ${max} caracteres.`,
+});
 
 export const userSchema = Joi.object({
-    username: Joi.string().alphanum().min(3).max(50).required().messages({
-        'string.base': 'El nombre de usuario debe ser un texto.',
+    username: Joi.string().alphanum().min(3).max(20).required().messages({
+        ...stringRequired('Nombre de usuario'),
         'string.alphanum': 'El nombre de usuario solo debe contener caracteres alfanuméricos.',
-        'string.min': 'El nombre de usuario debe tener al menos 3 caracteres.',
-        'string.max': 'El nombre de usuario debe tener un máximo de 50 caracteres.',
-        'any.required': 'El nombre de usuario es requerido.',
+        ...stringMin('Nombre de usuario', 3),
+        ...stringMax('Nombre de usuario', 20),
     }),
     password: Joi.string().min(8).required().messages({
-        'string.base': 'La contraseña debe ser un texto.',
-        'string.min': 'La contraseña debe tener al menos 8 caracteres.',
-        'any.required': 'La contraseña es requerida.',
+        ...stringRequired('Contraseña'),
+        ...stringMin('Contraseña', 8),
     }),
-    email: Joi.string().email().required().messages({
-        'string.base': 'El correo electrónico debe ser una cadena.',
-        'string.email': 'El correo electrónico debe ser válido.',
-        'any.required': 'El correo electrónico es obligatorio.',
-    }),
+    email: Joi.string().email().required().messages(stringRequired('Correo electrónico')),
     name: Joi.string().min(3).max(50).required().messages({
-        'string.base': 'El nombre debe ser una cadena.',
-        'any.required': 'El nombre es obligatorio.',
-        'string.min': 'El nombre debe tener al menos 3 caracteres.',
-        'string.max': 'El nombre de usuario debe tener un máximo de 50 caracteres.',
+        ...stringRequired('Nombre'),
+        ...stringMin('Nombre', 3),
+        ...stringMax('Nombre', 50),
     }),
     role: Joi.string().valid('user', 'admin').optional().messages({
-        'string.base': 'El rol debe ser una cadena.',
         'any.only': 'El rol debe ser "user" o "admin".',
     }),
-})
+});
 
 export const authSchema = Joi.object({
-    username: Joi.string().required(),
-    email: Joi.string().email().messages({
-        'string.base': 'El correo electrónico debe ser una cadena.',
-        'string.email': 'El correo electrónico debe ser válido.',
-    }),
-    password: Joi.string().min(8).messages({
-        'string.base': 'La contraseña debe ser un texto.',
-        'string.min': 'La contraseña debe tener al menos 8 caracteres.',
-    }),
-})
+    username: Joi.string().required().messages(stringRequired('Nombre de usuario')),
+    password: Joi.string().min(8).required().messages(stringRequired('Contraseña')),
+});
+
+
