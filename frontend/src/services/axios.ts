@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AuthStore } from '../context/auth.store'
 
 // create the instance config
 const instance = axios.create({
@@ -12,8 +13,8 @@ export default instance
 // add a request interceptor to add the token into every request before sending
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
-    if (token && config.headers) {
+    const token = AuthStore.getState().token
+    if (token && token.length > 0 && config.headers) {
       // if there is a token saved it will attach it to the request
       config.headers.Authorization = `Bearer ${token}`
     }
