@@ -27,12 +27,15 @@ type Actions = {
     password: string,
     role: string
   ) => Promise<void>
+
+  // verify token
+  verifyToken: () => Promise<void>
 }
 
 // this is where the store is created
 export const AuthStore = create<State & Actions>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // state
       isAuthenticated: false,
       isLoading: false,
@@ -43,9 +46,7 @@ export const AuthStore = create<State & Actions>()(
       login: async (username: string, password: string) => {
         try {
           const response = await authServices.login(username, password)
-          console.log(response.data.token)
-          set({ token: response.data.token })
-          console.log('authenticated')
+          set({ token: response.data.token, isAuthenticated: true })
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -79,6 +80,21 @@ export const AuthStore = create<State & Actions>()(
               status: error.response.status,
             },
           })
+        }
+      },
+      // verify token action
+      verifyToken: async () => {
+        try {
+          const token = get().token
+          if (token && token != '') {
+            console.log(token)
+            set({ isAuthenticated: true })
+            return
+          }
+          throw new Error('There is no valid token')
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (_) {
+          set({ isAuthenticated: false })
         }
       },
     }),
