@@ -2,6 +2,8 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AuthStore } from '../context/auth.store'
 import * as yup from 'yup'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type Input = {
   username: string
@@ -17,8 +19,16 @@ const schema = yup
 
 function LoginPage() {
   // get the login function from the store
+  const navigate = useNavigate()
   const login = AuthStore((state) => state.login)
   const loginError = AuthStore((state) => state.error)
+  const isAuthenticated = AuthStore((state) => state.isAuthenticated)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   // use the useForm hook to handle the form
   const {

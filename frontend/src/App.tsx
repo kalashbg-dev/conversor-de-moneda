@@ -2,6 +2,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { useNavigate, useHref, Route, Routes } from 'react-router-dom'
 import LoginPage from './pages/loginPage'
 import HomePage from './pages/homePage'
+import ProtectedRoute from './components/protectedRoute'
 
 function App() {
   return (
@@ -10,7 +11,9 @@ function App() {
       {/* Routes for the app */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
       </Routes>
     </NextUIProvider>
   )
