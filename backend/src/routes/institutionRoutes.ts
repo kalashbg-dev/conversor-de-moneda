@@ -18,10 +18,7 @@ const router = Router();
 
 // Rutas protegidas para crear, actualizar y eliminar instituciones
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
-router.get('/', (req, res, next) => {
-  console.log('Llamando a getAllInstitutions');
-  getAllInstitutions(req, res);
-}); // Acceso público para obtener todas las instituciones
+router.get('/', getAllInstitutions); // Acceso público para obtener todas las instituciones
 router.get('/:id', getInstitutionById); // Acceso público para obtener una institución específica
 router.post('/',  validateRequest(institutionSchema),createInstitution);
 router.put('/:id',  validateRequest(institutionSchema), updateInstitution);

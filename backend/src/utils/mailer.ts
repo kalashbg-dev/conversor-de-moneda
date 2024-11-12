@@ -12,7 +12,7 @@ export const sendConfirmationEmail = async (email: string, userId: string) => {
         }
     });
 
-    const confirmationLink = `http://localhost:5173/auth/confirm-email/${userId}`; // Cambia esto según tu configuración
+    const confirmationLink = `http://localhost:5173/users/confirm-email/${userId}`; // Cambia esto según tu configuración
 
     const mailOptions = {
         from: 'your-email@gmail.com',
