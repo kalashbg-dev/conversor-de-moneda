@@ -12,14 +12,15 @@ export const sendConfirmationEmail = async (email: string, userId: string) => {
         }
     });
 
-    const confirmationLink = `http://localhost:5000/api/users/confirm-email/${userId}`; // Cambia esto según tu configuración
+    const confirmationLink = `http://localhost:5173/auth/confirm-email/${userId}`; // Cambia esto según tu configuración
 
     const mailOptions = {
         from: 'your-email@gmail.com',
         to: email,
         subject: 'Confirma tu correo',
-        text: `Por favor, confirma tu correo haciendo clic en el siguiente enlace: ${confirmationLink}`
+        html: `Por favor, confirma tu correo haciendo clic en el siguiente enlace: <a href="${confirmationLink}">Exchange Rate</a>`
     };
 
     await transporter.sendMail(mailOptions);
 };
+

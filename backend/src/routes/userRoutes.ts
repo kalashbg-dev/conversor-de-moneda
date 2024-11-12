@@ -20,7 +20,7 @@ router.use(authMiddleware, roleMiddleware([Roles.ADMIN]))
 
 router.get('/', userController.getAllUsers)
 router.get('/:id', userController.getUserById)
-router.put('/:id', validateRequest(userSchema), userController.updateUser)
+router.put('/:id' ,validateRequest(userSchema), userController.updateUser)
 router.delete('/:id', userController.deleteUser)
 
 export default router

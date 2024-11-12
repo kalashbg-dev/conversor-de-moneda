@@ -1,130 +1,146 @@
-// src/controllers/exchangeRateController.ts
-import { Request, Response } from 'express'
-import ExchangeRate from '../models/ExchangeRate'
+import { Request, Response } from 'express';
+import ExchangeRate from '../models/ExchangeRate';
+import ExchangeRateHistory from '../models/ExchangeRateHistory';
 
 // Helper function to handle responses
 const handleResponse = (res: Response, statusCode: number, data: any) => {
-  res.status(statusCode).json(data)
+  res.status(statusCode).json(data);
 }
 
 // Helper function to handle errors
 const handleError = (res: Response, error: any, message: string, statusCode: number) => {
-  console.error(message, error)
-  res.status(statusCode).json({ error: message })
+  console.error(message, error);
+  res.status(statusCode).json({ error: message });
 }
 
-// Crear una nueva tasa de cambio
-export const createExchangeRate = async (req: Request, res: Response) => {
-  const { currencyFrom, currencyTo, exchangeRate } = req.body
-
-  // check if currencyFrom and currencyTo exists
-  const exchangeRateExists = await ExchangeRate.findOne({ currencyFrom, currencyTo })
-  if (exchangeRateExists) {
-    handleError(
-      res,
-      new Error('La tasa de cambio ya existe'),
-      'La tasa de cambio ya existe',
-      409 // status code which represents a conflict
-    )
-    return
-  }
-
-  const newCurrencyFrom = currencyFrom.toUpperCase()
-  const newCurrencyTo = currencyTo.toUpperCase()
+// Registrar un cambio en el historial de tasas de cambio
+const registerExchangeRateHistory = async (
+  currencyFrom: string,
+  currencyTo: string,
+  exchangeRate: number
+) => {
   try {
-    const newExchangeRate = new ExchangeRate({
-      currencyFrom: newCurrencyFrom,
-      currencyTo: newCurrencyTo,
+    const historyEntry = new ExchangeRateHistory({
+      currencyFrom,
+      currencyTo,
       exchangeRate,
-    })
-    const savedExchangeRate = await newExchangeRate.save()
-    handleResponse(res, 201, savedExchangeRate)
+      date: new Date()
+    });
+    await historyEntry.save();
   } catch (error) {
-    handleError(res, error, 'Error al crear la tasa de cambio', 500)
+    console.error("Error registering exchange rate history:", error);
   }
-}
+};
+
+// Crear un nuevo registro de tasa de cambio
+export const createExchangeRate = async (req: Request, res: Response) => {
+  try {
+    const { currencyFrom, currencyTo, exchangeRate } = req.body;
+
+    // Verificar si ya existe un registro con la misma combinación de currencyFrom y currencyTo
+    const existingRate = await ExchangeRate.findOne({ currencyFrom, currencyTo });
+    if (existingRate) {
+      return handleError(res, null, 'An exchange rate for this currency pair already exists', 400);
+    }
+
+    // Crear la nueva tasa de cambio
+    const newExchangeRate = new ExchangeRate({
+      currencyFrom,
+      currencyTo,
+      exchangeRate,
+    });
+
+    const savedExchangeRate = await newExchangeRate.save();
+
+    // Registrar en el historial
+    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate);
+
+    handleResponse(res, 201, savedExchangeRate);
+  } catch (error: unknown) {
+    // Verificar si el error es de tipo 'Error' y tiene el código 11000 (duplicado de clave)
+    if (error instanceof Error && (error as any).code === 11000) {
+      return handleError(res, error, 'An exchange rate for this currency pair already exists', 400);
+    }
+    // Si no es un error de tipo MongoDB, manejar el error general
+    handleError(res, error, 'Error creating exchange rate', 500);
+  }
+};
+
 
 // Obtener todas las tasas de cambio
 export const getAllExchangeRates = async (req: Request, res: Response) => {
   try {
-    const exchangeRates = await ExchangeRate.find()
-
-    if (!exchangeRates) {
-      handleError(
-        res,
-        new Error('No se encontraron tasas de cambio'),
-        'No se encontraron tasas de cambio',
-        404
-      )
-      return
-    }
-
-    handleResponse(res, 200, exchangeRates)
+    const exchangeRates = await ExchangeRate.find();
+    handleResponse(res, 200, exchangeRates);
   } catch (error) {
-    handleError(res, error, 'Error al obtener las tasas de cambio', 500)
+    handleError(res, error, 'Error fetching exchange rates', 500);
   }
-}
+};
 
-// Obtener una tasa de cambio por ID
-export const getExchangeRateById = async (req: Request, res: Response): Promise<void> => {
+// Obtener una tasa de cambio específica por su ID
+export const getExchangeRateById = async (req: Request, res: Response) => {
   try {
-    const exchangeRate = await ExchangeRate.findById(req.params.id)
+    const { id } = req.params;
+    const exchangeRate = await ExchangeRate.findById(id);
     if (!exchangeRate) {
-      handleError(
-        res,
-        new Error('Tasa de cambio no encontrada'),
-        'Tasa de cambio no encontrada',
-        404
-      )
-      return
+      return handleError(res, null, 'Exchange rate not found', 404);
     }
-    handleResponse(res, 200, exchangeRate)
+    handleResponse(res, 200, exchangeRate);
   } catch (error) {
-    handleError(res, error, 'Error al obtener la tasa de cambio', 500)
+    handleError(res, error, 'Error fetching exchange rate', 500);
   }
-}
+};
 
-// Actualizar una tasa de cambio
-export const updateExchangeRate = async (req: Request, res: Response): Promise<void> => {
-  const { currencyFrom, currencyTo, exchangeRate } = req.body
-  const newCurrencyFrom = currencyFrom.toUpperCase()
-  const newCurrencyTo = currencyTo.toUpperCase()
+// Actualizar un registro de tasa de cambio
+export const updateExchangeRate = async (req: Request, res: Response) => {
   try {
-    const updatedExchangeRate = await ExchangeRate.findByIdAndUpdate(
-      req.params.id,
-      { currencyFrom: newCurrencyFrom, currencyTo: newCurrencyTo, exchangeRate },
-      { new: true }
-    )
-    if (!updatedExchangeRate) {
-      handleError(
-        res,
-        new Error('Tasa de cambio no encontrada'),
-        'Tasa de cambio no encontrada',
-        404
-      )
-      return
+    const { id } = req.params;
+    const { currencyFrom, currencyTo, exchangeRate } = req.body;
+
+    // Verificar que el registro exista
+    const existingRate = await ExchangeRate.findById(id);
+    if (!existingRate) {
+      return handleError(res, null, 'Exchange rate not found', 404);
     }
-    handleResponse(res, 200, updatedExchangeRate)
-  } catch (error) {
-    handleError(res, error, 'Error al actualizar la tasa de cambio', 500)
-  }
-}
 
-// Eliminar una tasa de cambio
-export const deleteExchangeRate = async (req: Request, res: Response): Promise<void> => {
+    // Verificar si existe otro registro con la misma combinación de currencyFrom y currencyTo
+    const duplicateRate = await ExchangeRate.findOne({
+      currencyFrom,
+      currencyTo,
+      _id: { $ne: id } // Excluir el registro actual de la búsqueda
+    });
+
+    if (duplicateRate) {
+      return handleError(res, null, 'An exchange rate for this currency pair already exists', 400);
+    }
+
+    // Actualizar los campos
+    existingRate.currencyFrom = currencyFrom;
+    existingRate.currencyTo = currencyTo;
+    existingRate.exchangeRate = exchangeRate;
+    existingRate.update_date = new Date();
+
+    const updatedExchangeRate = await existingRate.save();
+
+    // Registrar en el historial
+    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate);
+
+    handleResponse(res, 200, updatedExchangeRate);
+  } catch (error) {
+    handleError(res, error, 'Error updating exchange rate', 500);
+  }
+};
+
+// Eliminar un registro de tasa de cambio
+export const deleteExchangeRate = async (req: Request, res: Response) => {
   try {
-    const deletedExchangeRate = await ExchangeRate.findByIdAndDelete(req.params.id)
+    const { id } = req.params;
+    const deletedExchangeRate = await ExchangeRate.findByIdAndDelete(id);
     if (!deletedExchangeRate) {
-      handleError(
-        res,
-        new Error('Tasa de cambio no encontrada'),
-        'Tasa de cambio no encontrada',
-        404
-      )
-      return
+      return handleError(res, null, 'Exchange rate not found', 404);
     }
-    res.status(204).send()
+    handleResponse(res, 200, { message: 'Exchange rate deleted successfully' });
   } catch (error) {
-    handleError(res, error, 'Error al eliminar la tasa de cambio', 500)
+    handleError(res, error, 'Error deleting exchange rate', 500);
   }
-}
+};

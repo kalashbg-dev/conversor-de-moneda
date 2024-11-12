@@ -1,22 +1,22 @@
-import { AuthStore } from '../context/auth.store'
-import { Navigate } from 'react-router-dom'
-import { Outlet } from 'react-router-dom'
+import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
 
-interface props {
-  children?: React.ReactNode
+interface ProtectedRouteProps {
+  children: ReactNode;
+  roles?: string[];
 }
 
-function ProtectedRoute({ children }: props): JSX.Element {
-  const isAuthenticated = AuthStore((state) => state.isAuthenticated)
-  const verifyToken = AuthStore((state) => state.verifyToken)
-
-  verifyToken()
+export default function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
+  const { isAuthenticated, role } = useAuthStore();
 
   if (!isAuthenticated) {
-    return <Navigate to={'/login'} />
+    return <Navigate to="/auth/login" />;
   }
 
-  return children ? <>{children}</> : <Outlet />
-}
+  if (roles && !roles.includes(role || '')) {
+    return <Navigate to="/" />;
+  }
 
-export default ProtectedRoute
+  return <>{children}</>;
+}
