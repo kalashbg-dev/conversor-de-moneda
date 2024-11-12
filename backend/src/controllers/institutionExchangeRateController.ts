@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import ExchangeRate from '../models/ExchangeRate';
+import InstitutionExchangeRate from '../models/InstitutionExchangeRate';
 import ExchangeRateHistory from '../models/ExchangeRateHistory';
+import Institution from '../models/Institution';
 
 // Helper function to handle responses
 const handleResponse = (res: Response, statusCode: number, data: any) => {
@@ -17,13 +18,15 @@ const handleError = (res: Response, error: any, message: string, statusCode: num
 const registerExchangeRateHistory = async (
   currencyFrom: string,
   currencyTo: string,
-  exchangeRate: number
+  exchangeRate: number,
+  institution: string
 ) => {
   try {
     const historyEntry = new ExchangeRateHistory({
       currencyFrom,
       currencyTo,
       exchangeRate,
+      institution,
       date: new Date()
     });
     await historyEntry.save();
@@ -32,45 +35,46 @@ const registerExchangeRateHistory = async (
   }
 };
 
-// Crear un nuevo registro de tasa de cambio
-export const createExchangeRate = async (req: Request, res: Response) => {
+// Crear un nuevo registro de tasa de cambio de institución
+export const createInstitutionExchangeRate = async (req: Request, res: Response) => {
   try {
-    const { currencyFrom, currencyTo, exchangeRate } = req.body;
+    const { currencyFrom, currencyTo, exchangeRate, institution } = req.body;
 
-    // Verificar si ya existe un registro con la misma combinación de currencyFrom y currencyTo
-    const existingRate = await ExchangeRate.findOne({ currencyFrom, currencyTo });
+    // Verificar que la institución exista
+    const institutionExists = await Institution.findById(institution);
+    if (!institutionExists) {
+      return handleError(res, null, 'Institution not found', 404);
+    }
+
+    // Verificar si ya existe un registro con la misma combinación de currencyFrom, currencyTo e institution
+    const existingRate = await InstitutionExchangeRate.findOne({ currencyFrom, currencyTo, institution });
     if (existingRate) {
-      return handleError(res, null, 'An exchange rate for this currency pair already exists', 400);
+      return handleError(res, null, 'An exchange rate for this currency pair already exists for this institution', 400);
     }
 
     // Crear la nueva tasa de cambio
-    const newExchangeRate = new ExchangeRate({
+    const newExchangeRate = new InstitutionExchangeRate({
       currencyFrom,
       currencyTo,
       exchangeRate,
+      institution,
     });
 
     const savedExchangeRate = await newExchangeRate.save();
 
     // Registrar en el historial
-    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate);
+    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate, institution);
 
     handleResponse(res, 201, savedExchangeRate);
-  } catch (error: unknown) {
-    // Verificar si el error es de tipo 'Error' y tiene el código 11000 (duplicado de clave)
-    if (error instanceof Error && (error as any).code === 11000) {
-      return handleError(res, error, 'An exchange rate for this currency pair already exists', 400);
-    }
-    // Si no es un error de tipo MongoDB, manejar el error general
+  } catch (error) {
     handleError(res, error, 'Error creating exchange rate', 500);
   }
 };
 
-
-// Obtener todas las tasas de cambio
-export const getAllExchangeRates = async (req: Request, res: Response) => {
+// Obtener todas las tasas de cambio de instituciones
+export const getAllInstitutionExchangeRates = async (req: Request, res: Response) => {
   try {
-    const exchangeRates = await ExchangeRate.find();
+    const exchangeRates = await InstitutionExchangeRate.find().populate('institution');
     handleResponse(res, 200, exchangeRates);
   } catch (error) {
     handleError(res, error, 'Error fetching exchange rates', 500);
@@ -78,10 +82,10 @@ export const getAllExchangeRates = async (req: Request, res: Response) => {
 };
 
 // Obtener una tasa de cambio específica por su ID
-export const getExchangeRateById = async (req: Request, res: Response) => {
+export const getInstitutionExchangeRateById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const exchangeRate = await ExchangeRate.findById(id);
+    const exchangeRate = await InstitutionExchangeRate.findById(id).populate('institution');
     if (!exchangeRate) {
       return handleError(res, null, 'Exchange rate not found', 404);
     }
@@ -91,39 +95,41 @@ export const getExchangeRateById = async (req: Request, res: Response) => {
   }
 };
 
-// Actualizar un registro de tasa de cambio
-export const updateExchangeRate = async (req: Request, res: Response) => {
+// Actualizar un registro de tasa de cambio de institución
+export const updateInstitutionExchangeRate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { currencyFrom, currencyTo, exchangeRate } = req.body;
+    const { currencyFrom, currencyTo, exchangeRate, institution } = req.body;
 
     // Verificar que el registro exista
-    const existingRate = await ExchangeRate.findById(id);
+    const existingRate = await InstitutionExchangeRate.findById(id);
     if (!existingRate) {
       return handleError(res, null, 'Exchange rate not found', 404);
     }
 
-    // Verificar si existe otro registro con la misma combinación de currencyFrom y currencyTo
-    const duplicateRate = await ExchangeRate.findOne({
+    // Verificar si existe otro registro con la misma combinación de currencyFrom, currencyTo, e institution
+    const duplicateRate = await InstitutionExchangeRate.findOne({
       currencyFrom,
       currencyTo,
+      institution,
       _id: { $ne: id } // Excluir el registro actual de la búsqueda
     });
 
     if (duplicateRate) {
-      return handleError(res, null, 'An exchange rate for this currency pair already exists', 400);
+      return handleError(res, null, 'An exchange rate for this currency pair already exists for this institution', 400);
     }
 
     // Actualizar los campos
     existingRate.currencyFrom = currencyFrom;
     existingRate.currencyTo = currencyTo;
     existingRate.exchangeRate = exchangeRate;
+    existingRate.institution = institution;
     existingRate.update_date = new Date();
 
     const updatedExchangeRate = await existingRate.save();
 
     // Registrar en el historial
-    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate);
+    await registerExchangeRateHistory(currencyFrom, currencyTo, exchangeRate, institution);
 
     handleResponse(res, 200, updatedExchangeRate);
   } catch (error) {
@@ -131,11 +137,11 @@ export const updateExchangeRate = async (req: Request, res: Response) => {
   }
 };
 
-// Eliminar un registro de tasa de cambio
-export const deleteExchangeRate = async (req: Request, res: Response) => {
+// Eliminar un registro de tasa de cambio de institución
+export const deleteInstitutionExchangeRate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const deletedExchangeRate = await ExchangeRate.findByIdAndDelete(id);
+    const deletedExchangeRate = await InstitutionExchangeRate.findByIdAndDelete(id);
     if (!deletedExchangeRate) {
       return handleError(res, null, 'Exchange rate not found', 404);
     }

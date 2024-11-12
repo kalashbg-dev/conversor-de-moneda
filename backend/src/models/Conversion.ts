@@ -1,22 +1,54 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema, model, Document } from 'mongoose';
 
-export interface ConversionDocument extends Document {
+interface IConversion extends Document {
   amount: number;
   currencyFrom: string;
   currencyTo: string;
   result: number;
-  timestamp: Date;
+  date: Date;
+  exchange_rate_id?: mongoose.Types.ObjectId;
+  institution_exchange_rate_id?: mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const ConversionSchema: Schema = new Schema({
-  amount: { type: Number, required: true },
-  currencyFrom: { type: String, required: true },
-  currencyTo: { type: String, required: true },
-  result: { type: Number, required: true },
-},
+const conversionSchema = new Schema<IConversion>(
   {
-    timestamps: true,
-    versionKey: false
-  });
+    amount: { 
+      type: Number, 
+      required: true 
+    },
+    currencyFrom: { 
+      type: String, 
+      required: true 
+    },
+    currencyTo: { 
+      type: String, 
+      required: true 
+    },
+    result: { 
+      type: Number, 
+      required: true 
+    },
+    date: { 
+      type: Date, 
+      default: Date.now 
+    },
+    exchange_rate_id: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'ExchangeRate' 
+    },
+    institution_exchange_rate_id: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'InstitutionExchangeRate' 
+    }
+  },
+  {
+    timestamps: true, // enable timestamps
+    versionKey: false // disable __v
+  }
+);
 
-export default mongoose.model<ConversionDocument>('Conversion', ConversionSchema);
+const Conversion = model<IConversion>('Conversion', conversionSchema);
+
+export default Conversion;

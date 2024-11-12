@@ -139,8 +139,9 @@ export const getUserById = async (req: Request, res: Response) => {
 
 // Update user
 export const updateUser = async (req: Request, res: Response) => {
+  const { password, ...rest } = req.body
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, rest, { new: true })
     if (!updatedUser) {
       handleError(res, new Error('Usuario no encontrado'), 'Usuario no encontrado', 404)
       return
