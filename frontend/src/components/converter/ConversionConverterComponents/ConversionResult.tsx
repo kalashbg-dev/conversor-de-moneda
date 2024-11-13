@@ -38,7 +38,7 @@ export function ConversionResult({
           size="lg"
           onPress={onReset}
           startContent={<RotateCcw size={18} />}
-          className="h-12 font-semibold bg-primary-600 dark:bg-primary-500 text-white font-medium"
+          className="h-12 bg-primary-600 dark:bg-primary-500 text-white font-medium"
         >
           Reset
         </Button>
