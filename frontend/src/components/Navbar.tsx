@@ -87,7 +87,7 @@ export default function Navbar() {
                 key="institutions"
                 startContent={<Building2 size={18} />}
                 as={RouterLink}
-                // to="/institutions"
+                to="/institutions"
               >
                 Institutions
               </DropdownItem>
@@ -95,7 +95,7 @@ export default function Navbar() {
                 key="users"
                 startContent={<Users size={18} />}
                 as={RouterLink}
-                // to="/users"
+                to="/users"
               >
                 Users
               </DropdownItem>
@@ -103,7 +103,7 @@ export default function Navbar() {
                 key="exchange-rates"
                 startContent={<DollarSign size={18} />}
                 as={RouterLink}
-                // to="/admin/exchange-rates"
+                to="/admin/exchange-rates"
               >
                 Exchange Rates
               </DropdownItem>
@@ -111,7 +111,7 @@ export default function Navbar() {
                 key="institution-rates"
                 startContent={<DollarSign size={18} />}
                 as={RouterLink}
-                // to="/exchange-rates/institutions"
+                to="/exchange-rates/institutions"
               >
                 Institution Rates
               </DropdownItem>
