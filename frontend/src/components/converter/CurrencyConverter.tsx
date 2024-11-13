@@ -161,12 +161,15 @@ export function CurrencyConverter() {
         </p>
         <div className="flex flex-col gap-6">
           {isAuthenticated && (
-            <InstitutionSelect
-              institutions={institutions as Institution[]}
-              selectedInstitution={selectedInstitution}
-              onSelect={setSelectedInstitution}
-            />
-          )}
+            <div className="institute-selector-container">
+              <InstitutionSelect
+                label="Institution (Optional)"
+                institutions={institutions as Institution[]}
+                selectedInstitution={selectedInstitution}
+                onSelect={setSelectedInstitution}
+                />
+            </div>
+              )}
 
           <ConversionControls
             amount={amount}

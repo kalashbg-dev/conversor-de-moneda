@@ -41,7 +41,7 @@ export default function Navbar() {
             className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
           >
             <DollarSign size={18} />
-            Exchange Rates
+            Our Rates
           </RouterLink>
         </NavbarItem>
 
