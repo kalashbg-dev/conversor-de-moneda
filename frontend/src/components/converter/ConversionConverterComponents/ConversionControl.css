@@ -7,9 +7,6 @@
     border-radius: 4px;
 }
 
-.institute-selector option {
-    max-width: 100%;
-}
 .institute-selector select {
     max-width: 100%;
     font-size: 20px;
