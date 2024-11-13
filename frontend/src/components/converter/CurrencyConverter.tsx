@@ -18,6 +18,7 @@ import { useConversion } from './hooks/useConversion';
 import { getGMTTime } from './utils';
 import type { ExchangeRate, InstitutionExchangeRate } from './types';
 import { toast } from 'sonner';
+import InputSelector from './InputSelector';
 
 export function CurrencyConverter() {
   const [amount, setAmount] = useState<string>('');
@@ -220,6 +221,15 @@ export function CurrencyConverter() {
     setBaseRate(null);
   };
 
+  // This function fixes a type problem when assigning the 'result' value to the 'Converted to' input 'value' property.
+  function handledResult(number: number | null) {
+    console.log('Result is: ', number);
+    if (number !== null)
+      return number;
+
+    return 0;
+  }
+
   if (isLoadingGeneral || (isAuthenticated && isLoadingInstitutional)) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -262,7 +272,21 @@ export function CurrencyConverter() {
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="w-full md:w-[45%] space-y-2">
               <div className="flex gap-2">
-                <Input
+                {/* Amount Input and Selector*/}
+                <InputSelector
+                label='Amount'
+                readOnly={false} 
+                value={parseFloat(amount)}
+                min={0}
+                onValueChange={(element) => setAmount(element.target.value)}
+                availableCurrencies={availableFromCurrencies}
+                onCurrencyChange={(e) => {
+                    setCurrencyFrom(e.target.value);
+                    setCurrencyTo('');
+                    setResult(null);
+                    setBaseRate(null);
+                  }}/>
+                {/* <Input
                   type="number"
                   placeholder="Amount"
                   value={amount}
@@ -278,15 +302,15 @@ export function CurrencyConverter() {
                     input: "text-medium",
                     inputWrapper: "h-12"
                   }}
-                />
+                /> */}
                 <Select
                   selectedKeys={currencyFrom ? [currencyFrom] : []}
-                  onChange={(e) => {
-                    setCurrencyFrom(e.target.value);
-                    setCurrencyTo('');
-                    setResult(null);
-                    setBaseRate(null);
-                  }}
+                  // onChange={(e) => {
+                  //   setCurrencyFrom(e.target.value);
+                  //   setCurrencyTo('');
+                  //   setResult(null);
+                  //   setBaseRate(null);
+                  // }}
                   className="w-32"
                   classNames={{
                     trigger: "h-12",
@@ -301,7 +325,8 @@ export function CurrencyConverter() {
                 </Select>
               </div>
             </div>
-
+            
+            
             <div className="flex items-center justify-center md:w-[10%]">
               <Button
                 isIconOnly
@@ -315,16 +340,22 @@ export function CurrencyConverter() {
 
             <div className="w-full md:w-[45%] space-y-2">
               <div className="flex gap-2">
-                <div className="flex-1 h-12 flex items-center px-4 bg-default-100 dark:bg-default-50 rounded-medium">
+                <InputSelector 
+                  label="Converted to" 
+                  value={handledResult(result)} 
+                  readOnly={true} 
+                  availableCurrencies={availableToCurrencies}
+                />
+                {/* <div className="flex-1 h-12 flex items-center px-4 bg-default-100 dark:bg-default-50 rounded-medium">
                   {result !== null ? (
-                    <span /*className="font-semibold text-[black]" */>
+                    <span /*className="font-semibold text-[black]" */ /*>
                       {result.toFixed(2)}
                     </span>
                   ) : (
                     <span className="text-default-400">Result</span>
                   )}
-                </div>
-                <Select
+                </div> */}
+                {/* <Select
                   selectedKeys={currencyTo ? [currencyTo] : []}
                   onChange={(e) => {
                     setCurrencyTo(e.target.value);
@@ -343,7 +374,7 @@ export function CurrencyConverter() {
                       {currency}
                     </SelectItem>
                   ))}
-                </Select>
+                </Select> */}
               </div>
             </div>
           </div>
@@ -374,12 +405,12 @@ export function CurrencyConverter() {
               </div>
             )}
             <div className="flex justify-end items-center gap-3 w-full md:w-auto md:ml-auto">
-              <Button
+              {/* <Button
                 size="lg"
                 className="h-12 font-semibold bg-[#E5133A] text-white hover:bg-[#E5133A]/90"
               >
                 Get Started
-              </Button>
+              </Button> */}
               <Button
                 variant="flat"
                 size="lg"
