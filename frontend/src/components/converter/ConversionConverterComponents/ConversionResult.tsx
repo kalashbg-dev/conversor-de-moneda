@@ -27,18 +27,18 @@ export function ConversionResult({
         </div>
       )}
       <div className="flex justify-end items-center gap-3 w-full md:w-auto md:ml-auto">
-        <Button
+        {/* <Button
           size="lg"
           className="h-12 font-semibold bg-[#E5133A] text-white hover:bg-[#E5133A]/90"
         >
           Get Started
-        </Button>
+        </Button> */}
         <Button
           variant="flat"
           size="lg"
           onPress={onReset}
           startContent={<RotateCcw size={18} />}
-          className="h-12 font-semibold"
+          className="h-12 font-semibold bg-primary-600 dark:bg-primary-500 text-white font-medium"
         >
           Reset
         </Button>
