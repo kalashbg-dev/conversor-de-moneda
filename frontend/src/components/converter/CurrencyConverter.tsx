@@ -140,15 +140,6 @@ export function CurrencyConverter() {
     setBaseRate(null);
   };
 
-  // This function fixes a type problem when assigning the 'result' value to the 'Converted to' input 'value' property.
-  function handledResult(number: number | null) {
-    console.log('Result is: ', number);
-    if (number !== null)
-      return number;
-
-    return 0;
-  }
-
   if (isLoadingGeneral || (isAuthenticated && isLoadingInstitutional)) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -169,16 +160,16 @@ export function CurrencyConverter() {
           competitive rates with no hidden fees.
         </p>
         <div className="flex flex-col gap-6">
-          <div className="institute-selector-container">
-            {isAuthenticated && (
-                <InstitutionSelect
-                  label="Institution (Optional)"
-                  institutions={institutions as Institution[]}
-                  selectedInstitution={selectedInstitution}
-                  onSelect={setSelectedInstitution}
-                  />
-                )}
-          </div>
+          {isAuthenticated && (
+            <div className="institute-selector-container">
+              <InstitutionSelect
+                label="Institution (Optional)"
+                institutions={institutions as Institution[]}
+                selectedInstitution={selectedInstitution}
+                onSelect={setSelectedInstitution}
+                />
+            </div>
+              )}
 
           <ConversionControls
             amount={amount}
