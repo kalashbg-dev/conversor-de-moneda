@@ -1,11 +1,11 @@
 import { api } from '@/lib/axios';
 import type { User } from '@/types/api';
-
+import type {Roles} from '@/constants/roles';
 interface UpdateUserData {
   username: string;
   email: string;
   name: string;
-  role: 'user' | 'admin';
+  role: typeof Roles[keyof typeof Roles]; // or keyof typeof Roles if Roles is an enum
 }
 
 export const userApi = {

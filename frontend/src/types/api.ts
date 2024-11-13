@@ -1,3 +1,5 @@
+import { Key, ReactNode } from "react";
+import {Roles} from '@/constants/roles';
 export interface Institution {
   _id: string;
   name: string;
@@ -11,7 +13,7 @@ export interface User {
   username: string;
   email: string;
   name: string;
-  role: 'user' | 'admin';
+  role: typeof Roles[keyof typeof Roles];
   isConfirmed: boolean;
   createdAt: string;
   updatedAt: string;
@@ -21,7 +23,7 @@ export interface ExchangeRate {
   _id: Key | null | undefined;
   currencyTo: ReactNode;
   updatedAt(updatedAt: any): import("react").ReactNode;
-  exchangeRate: any;
+  exchangeRate: number;
   currencyFrom: ReactNode;
   id: string;
   fromCurrency: string;
@@ -32,8 +34,8 @@ export interface ExchangeRate {
 
 export interface Conversion {
   _id: Key | null | undefined;
-  currencyTo: any;
-  currencyFrom: any;
+  currencyTo: string;
+  currencyFrom: string;
   id: string;
   amount: number;
   fromCurrency: string;
