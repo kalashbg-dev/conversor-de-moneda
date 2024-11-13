@@ -13,22 +13,35 @@ export function CurrencySelector({
   currencies,
   isDisabled,
 }: CurrencySelectorProps) {
+
+
   return (
-    <Select
-      selectedKeys={value ? [value] : []}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-32"
-      isDisabled={isDisabled}
-      classNames={{
-        trigger: "h-12",
-        value: "text-small",
-      }}
-    >
-      {currencies.map((currency) => (
-        <SelectItem key={currency} value={currency}>
-          {currency}
-        </SelectItem>
-      ))}
-    </Select>
+    <div className="currency-selector">
+      <select value={value || ""} onChange={(event) => onChange(event.target.value)}>
+        {currencies.map((currency) => (
+          <option key={currency} value={currency}>
+            {currency}
+          </option>
+        ))}
+      </select>
+
+    </div>
+
+    // <Select
+    //   selectedKeys={value ? [value] : []}
+    //   onChange={(e) => onChange(e.target.value)}
+    //   className="w-32"
+    //   isDisabled={isDisabled}
+    //   classNames={{
+    //     trigger: "h-12",
+    //     value: "text-small",
+    //   }}
+    // >
+    //   {currencies.map((currency) => (
+    //     <SelectItem key={currency} value={currency}>
+    //       {currency}
+    //     </SelectItem>
+    //   ))}
+    // </Select>
   );
 }
