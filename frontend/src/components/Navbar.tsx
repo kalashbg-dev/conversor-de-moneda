@@ -1,13 +1,13 @@
 import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
-import { Home, Moon, Sun, LogOut, Building2, Users, DollarSign, ChevronDown, History } from 'lucide-react';
+import { Home, LogOut, Building2, Users, DollarSign, ChevronDown, History } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
-import { useThemeStore } from '@/stores/themeStore';
+// import { useThemeStore } from '@/stores/themeStore';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Roles } from '@/constants/roles';
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuthStore();
-  const { isDark, toggle } = useThemeStore();
+  // const { isDark, toggle } = useThemeStore();
   const navigate = useNavigate();
   const isAdmin = role === Roles.ADMIN;
 
@@ -151,7 +151,7 @@ export default function Navbar() {
           </NavbarItem>
         )}
         
-        <NavbarItem>
+        {/* <NavbarItem>
           <Button 
             isIconOnly 
             variant="light" 
@@ -161,7 +161,7 @@ export default function Navbar() {
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </Button>
-        </NavbarItem>
+        </NavbarItem> */}
       </NavbarContent>
     </NextUINavbar>
   );
