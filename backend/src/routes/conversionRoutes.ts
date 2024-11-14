@@ -71,6 +71,7 @@ const router = Router();
 
 // Rutas de conversion
 router.post("/convert", validateRequest(conversionSchema), logConversion);
+
 /**
  * @swagger
  * /api/conversions/history:
