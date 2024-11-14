@@ -1,9 +1,27 @@
-import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
-import { Home, LogOut, Building2, Users, DollarSign, ChevronDown, History } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
+import {
+  Navbar as NextUINavbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+import {
+  Home,
+  LogOut,
+  Building2,
+  Users,
+  DollarSign,
+  ChevronDown,
+  History,
+} from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
 // import { useThemeStore } from '@/stores/themeStore';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Roles } from '@/constants/roles';
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Roles } from "@/constants/roles";
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuthStore();
@@ -13,22 +31,24 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    navigate('/users/login');
+    navigate("/users/login");
   };
 
   return (
-    <NextUINavbar className="border-b border-surface-200 dark:border-primary-900">
+    <NextUINavbar className="border-b border-surface-200">
       <NavbarBrand>
         <RouterLink to="/" className="flex items-center">
           <Home className="mr-2 text-primary-600 dark:text-primary-400" />
-          <p className="font-semibold text-primary-600 dark:text-primary-400">Exchange Rate</p>
+          <p className="font-semibold text-primary-600 dark:text-primary-400">
+            Exchange Rate
+          </p>
         </RouterLink>
       </NavbarBrand>
-      
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+
+      {/* <NavbarContent className="hidden lg:flex gap-4" justify="center">
         <NavbarItem>
-          <RouterLink 
-            to="/" 
+          <RouterLink
+            to="/"
             className="text-foreground hover:text-primary-600 dark:hover:text-primary-400"
           >
             Home
@@ -36,8 +56,8 @@ export default function Navbar() {
         </NavbarItem>
 
         <NavbarItem>
-          <RouterLink 
-            to="/exchange-rates" 
+          <RouterLink
+            to="/exchange-rates"
             className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
           >
             <DollarSign size={18} />
@@ -48,8 +68,8 @@ export default function Navbar() {
         {isAuthenticated && (
           <>
             <NavbarItem>
-              <RouterLink 
-                to="/exchange-rates/history" 
+              <RouterLink
+                to="/exchange-rates/history"
                 className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
               >
                 <History size={18} />
@@ -57,8 +77,8 @@ export default function Navbar() {
               </RouterLink>
             </NavbarItem>
             <NavbarItem>
-              <RouterLink 
-                to="/conversions/history" 
+              <RouterLink
+                to="/conversions/history"
                 className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
               >
                 <History size={18} />
@@ -67,7 +87,126 @@ export default function Navbar() {
             </NavbarItem>
           </>
         )}
-        
+      </NavbarContent> */}
+
+      <NavbarContent justify="end">
+        {/* user */}
+        <Dropdown className="">
+          <DropdownTrigger>
+            <Button
+              variant="light"
+              className="text-foreground hover:text-primary-600 dark:hover:text-primary-400"
+              endContent={<ChevronDown size={16} />}
+            >
+              Menu
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu>
+            {/* <DropdownItem
+                key="institution-rates"
+                startContent={<DollarSign size={18} />}
+                as={RouterLink}
+                className='text-black'
+                to="/exchange-rates/institutions"
+              >
+                Institution Rates
+              </DropdownItem> */}
+
+            <DropdownItem
+              startContent={<DollarSign size={18} />}
+              as={RouterLink}
+              className="text-black"
+              to="/exchange-rates"
+            >
+              Our Rates
+            </DropdownItem>
+            <DropdownItem
+              key="exchange-rates"
+              startContent={<History size={18} />}
+              className="text-black"
+              as={RouterLink}
+              to="/exchange-rates/history"
+            >
+              Rate History
+            </DropdownItem>
+            <DropdownItem
+              key="conversions-history"
+              startContent={<History size={18} />}
+              className="text-black"
+              as={RouterLink}
+              to="/conversions/history"
+            >
+              Conversion History
+            </DropdownItem>
+            {/* {isAuthenticated && (
+              <>
+              <DropdownItem
+                key = "exchange-rates/history"
+                startContent={<><History size={18}
+                  className="text-black"
+                  to="/exchange-rates/history"
+                >
+
+                  Rate History
+                </DropdownItem><DropdownItem
+                    key="conversions/history"
+                    startContent={<History size={18}
+                      className="text-black"
+                      to="/conversions/history"
+                    >
+                      Conversion History
+                    </DropdownItem>} />
+                    </>
+            )} */}
+
+            {/* {isAuthenticated && (
+              <>
+                
+                  <RouterLink
+                    to="/exchange-rates/history"
+                    className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                  >
+                    <History size={18} />
+                    Rate History
+                  </RouterLink>
+               
+                <DropdownItem>
+                  <RouterLink
+                    to="/conversions/history"
+                    className="flex items-center gap-2 text-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                  >
+                    <History size={18} />
+                    Conversion History
+                  </RouterLink>
+                </DropdownItem>
+              </>
+            )} */}
+            {/* {isAuthenticated && (
+              <>
+                <DropdownItem
+                  key="users"
+                  startContent={<Users size={18} />}
+                  as={RouterLink}
+                  className="text-black"
+                  to="/users"
+                >
+                  Users
+                </DropdownItem>
+                <DropdownItem
+                  key="institutions"
+                  startContent={<Building2 size={18} />}
+                  as={RouterLink}
+                  className="text-black"
+                  to="/institutions"
+                >
+                  Institutions
+                </DropdownItem>
+              </>
+            )} */}
+          </DropdownMenu>
+        </Dropdown>
+
+        {/* admin */}
         {isAuthenticated && isAdmin && (
           <Dropdown>
             <DropdownTrigger>
@@ -79,14 +218,12 @@ export default function Navbar() {
                 Admin
               </Button>
             </DropdownTrigger>
-            <DropdownMenu 
-              aria-label="Admin actions"
-              className="w-[200px]"
-            >
+            <DropdownMenu aria-label="Admin actions" className="w-[200px]">
               <DropdownItem
                 key="institutions"
                 startContent={<Building2 size={18} />}
                 as={RouterLink}
+                className="text-black"
                 to="/institutions"
               >
                 Institutions
@@ -95,6 +232,7 @@ export default function Navbar() {
                 key="users"
                 startContent={<Users size={18} />}
                 as={RouterLink}
+                className="text-black"
                 to="/users"
               >
                 Users
@@ -103,6 +241,7 @@ export default function Navbar() {
                 key="exchange-rates"
                 startContent={<DollarSign size={18} />}
                 as={RouterLink}
+                className="text-black"
                 to="/admin/exchange-rates"
               >
                 Exchange Rates
@@ -111,6 +250,7 @@ export default function Navbar() {
                 key="institution-rates"
                 startContent={<DollarSign size={18} />}
                 as={RouterLink}
+                className="text-black"
                 to="/exchange-rates/institutions"
               >
                 Institution Rates
@@ -118,16 +258,11 @@ export default function Navbar() {
             </DropdownMenu>
           </Dropdown>
         )}
-      </NavbarContent>
-
-      <NavbarContent justify="end">
         {isAuthenticated ? (
           <>
-            <NavbarItem>
-              <span className="text-sm text-foreground mr-4">
-                Role: {role}
-              </span>
-            </NavbarItem>
+            {/* <NavbarItem>
+              <span className="text-sm text-foreground mr-4">Role: {role}</span>
+            </NavbarItem> */}
             <NavbarItem>
               <Button
                 variant="light"
@@ -150,7 +285,7 @@ export default function Navbar() {
             </Button>
           </NavbarItem>
         )}
-        
+
         {/* <NavbarItem>
           <Button 
             isIconOnly 

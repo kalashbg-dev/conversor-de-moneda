@@ -12,7 +12,7 @@ import ExchangeRateDetails from './pages/ExchangeRateDetails';
 import AdminExchangeRates from './pages/admin/ExchangeRates';
 import ExchangeRateHistory from './pages/ExchangeRateHistory';
 import ConversionHistory from './pages/ConversionHistory';
-import ProtectedRoute from './components/protectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import { Roles } from './constants/roles';
 
 export default function App() {
@@ -28,17 +28,16 @@ export default function App() {
         <Route 
           path="/exchange-rates/history" 
           element={
-            <ProtectedRoute>
-              <ExchangeRateHistory />
-            </ProtectedRoute>
+              <ExchangeRateHistory /> 
           } 
+          
         />
         <Route 
           path="/conversions/history" 
           element={
-            <ProtectedRoute>
+            
               <ConversionHistory />
-            </ProtectedRoute>
+            
           } 
         />
         <Route 

@@ -13,7 +13,7 @@ const router = Router();
 router.post("/convert", validateRequest(conversionSchema), logConversion);
 
 // Ruta para obtener el historial de conversiones (solo para ADMIN)
-router.use(authMiddleware, roleMiddleware([Roles.ADMIN]));
-router.get("/history", authMiddleware, getConversionHistory);
+router.use(authMiddleware, roleMiddleware([Roles.ADMIN||Roles.USER]));
+router.get("/history", getConversionHistory);
 
 export default router;

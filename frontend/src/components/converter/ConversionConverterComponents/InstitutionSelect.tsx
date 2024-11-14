@@ -23,6 +23,7 @@ export function InstitutionSelect({
     <div className="institute-selector">
       <label className="text-small">{label}</label>
       <select value={selectedInstitution} onChange={(e) => onSelect(e.target.value)}>
+        <option value="">Select an institution</option>
         {institutions.map((institution) => (
           <option key={institution._id} value={institution._id}>
             {institution.name}
