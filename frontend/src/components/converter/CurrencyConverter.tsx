@@ -149,16 +149,8 @@ export function CurrencyConverter() {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto p-8">
       <CardBody className="gap-6 p-4 sm:p-6">
-        <h2 className="text-2xl font-semibold text-center">
-          Make fast and affordable international business payments
-        </h2>
-        <p className="text-center text-small">
-          Send secure international business payments in{" "}
-          <span className="font-semibold">XX</span> currencies, all at
-          competitive rates with no hidden fees.
-        </p>
         <div className="flex flex-col gap-6">
           {isAuthenticated && (
             <div className="institute-selector-container">

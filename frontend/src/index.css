@@ -36,3 +36,11 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #0052CC;
 }
+
+/* css-navbar 982.40px x 834.40px < 1024px */
+
+@media screen and (max-width: 1024px) {
+  .css-navbar {
+    padding: auto;
+  }
+}

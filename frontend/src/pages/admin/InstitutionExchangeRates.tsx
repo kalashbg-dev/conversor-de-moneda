@@ -91,7 +91,7 @@ export default function InstitutionExchangeRates() {
   console.log('Rendering with rates:', rates);
 
   return (
-    <div className="p-6">
+    <div className="container mx-auto px-4 py-8">
       <Card className="mb-6">
         <CardBody className="flex flex-row justify-between items-center">
           <div className="flex items-center gap-3">
