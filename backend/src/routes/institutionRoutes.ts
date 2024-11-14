@@ -16,8 +16,9 @@ import { institutionSchema } from '../validators/institutionValidator';
 const router = Router();
 
 
+
 // Rutas protegidas para crear, actualizar y eliminar instituciones
-router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
+router.use(authMiddleware, roleMiddleware([Roles.ADMIN||Roles.USER])); // Middleware para proteger las siguientes rutas
 router.get('/', getAllInstitutions); // Acceso público para obtener todas las instituciones
 router.get('/:id', getInstitutionById); // Acceso público para obtener una institución específica
 router.post('/',  validateRequest(institutionSchema),createInstitution);

@@ -15,8 +15,6 @@ import { institutionExchangeRateValidator } from '../validators/institutionExcha
 
 const router = Router();
 
-// Rutas públicas para obtener las tasas de cambio específicas de la institución
-
 // Rutas protegidas para crear, actualizar y eliminar tasas de cambio de institución
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
 router.get('/', getAllInstitutionExchangeRates); // Ver todas las tasas de cambio para instituciones
