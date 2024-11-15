@@ -274,7 +274,7 @@ export default function Navbar() {
                 startContent={<LogOut size={18} />}
                 onClick={handleLogout}
               >
-                {t('auth.logout')} // ejemplo de traducción de cerrar sesión
+                {t('auth.logout')}{ /* ejemplo de traducción de cerrar sesión*/}
               </Button>
             </NavbarItem>
           </>
@@ -285,7 +285,7 @@ export default function Navbar() {
               to="/users/login"
               className="bg-primary-600 text-white font-medium dark:bg-primary-500"
             >
-              {t('auth.login')} // ejemplo de traducción de iniciar sesión
+              {t('auth.login')}{/* ejemplo de traducción de iniciar sesión */}
             </Button>
           </NavbarItem>
         )}
