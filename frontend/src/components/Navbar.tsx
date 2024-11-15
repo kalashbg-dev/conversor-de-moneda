@@ -22,12 +22,16 @@ import { useAuthStore } from "@/stores/authStore";
 // import { useThemeStore } from '@/stores/themeStore';
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Roles } from "@/constants/roles";
+import { useTranslation } from 'react-i18next'; // useTranslation para manejar el idioma
+import LanguageSelector from './LanguageSelector'; // Componente LanguageSelector para el selector de idioma 
+
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuthStore();
   // const { isDark, toggle } = useThemeStore();
   const navigate = useNavigate();
   const isAdmin = role === Roles.ADMIN;
+  const { t } = useTranslation(); // Utiliza useTranslation para obtener la función t para traducir el texto
 
   const handleLogout = () => {
     logout();
@@ -270,7 +274,7 @@ export default function Navbar() {
                 startContent={<LogOut size={18} />}
                 onClick={handleLogout}
               >
-                Logout
+                {t('auth.logout')}{ /* ejemplo de traducción de cerrar sesión*/}
               </Button>
             </NavbarItem>
           </>
@@ -281,11 +285,14 @@ export default function Navbar() {
               to="/users/login"
               className="bg-primary-600 text-white font-medium dark:bg-primary-500"
             >
-              Login
+              {t('auth.login')}{/* ejemplo de traducción de iniciar sesión */}
             </Button>
           </NavbarItem>
         )}
 
+<NavbarItem>
+          <LanguageSelector />
+        </NavbarItem>
         {/* <NavbarItem>
           <Button 
             isIconOnly 
