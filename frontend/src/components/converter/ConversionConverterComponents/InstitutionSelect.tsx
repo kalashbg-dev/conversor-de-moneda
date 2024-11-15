@@ -3,6 +3,8 @@
 interface Institution {
   _id: string;
   name: string;
+  country?: string;
+  img?: string;
 }
 
 interface InstitutionSelectProps {
@@ -18,10 +20,30 @@ export function InstitutionSelect({
   selectedInstitution,
   onSelect,
 }: InstitutionSelectProps) {
+
+  function getInstituteImg() {
+    let img;
+    img = institutions.find((institution) => {
+      if (institution._id === selectedInstitution) {
+        return true;
+      }
+      return false;
+    });
+
+    if (!img) {
+      return "";
+    }
+    
+    return img.img;
+  }
+
+  const image = getInstituteImg();
   return (
 
     <div className="institute-selector">
+      <div className="selector-image">
       <label className="text-small">{label}</label>
+      
       <select value={selectedInstitution} onChange={(e) => onSelect(e.target.value)}>
         <option value="">Select an institution</option>
         {institutions.map((institution) => (
@@ -30,6 +52,10 @@ export function InstitutionSelect({
           </option>
         ))}
       </select>
+      
+      
+      </div>      
+      <img className="rounded-full max-w-16 max-h-16 object-contain" src={image} alt="" />
     </div>
     
     // <Select
