@@ -4,6 +4,7 @@ export interface Institution {
   _id: string;
   name: string;
   country?: string | null;
+  img?: string | null;
   createdAt: string;
   updatedAt: string;
 }

@@ -50,7 +50,7 @@ export default function Register() {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">
-      <Card className="w-full max-w-md bg-white shadow-sm border border-surface-200">
+      <Card className="w-full max-w-md bg-white shadow-2xl border border-surface-200">
         <CardHeader className="flex flex-col gap-3 bg-primary-50 border-b border-surface-200">
           <h1 className="text-xl font-semibold text-center w-full py-2">Create Account</h1>
         </CardHeader>

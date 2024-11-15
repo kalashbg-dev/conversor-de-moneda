@@ -4,6 +4,7 @@ interface IInstitution extends Document {
     _id: string;
   name: string;
   country?: string;
+  img?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,6 +16,10 @@ const institutionSchema = new Schema<IInstitution>(
       required: true 
     },
     country: { 
+      type: String, 
+      default: null 
+    },
+    img: { 
       type: String, 
       default: null 
     }
