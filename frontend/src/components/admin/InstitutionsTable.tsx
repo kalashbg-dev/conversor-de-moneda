@@ -72,6 +72,7 @@ export default function InstitutionsTable({
         }}
       >
         <TableHeader>
+          <TableColumn>LOGO</TableColumn>
           <TableColumn>NAME</TableColumn>
           <TableColumn>COUNTRY</TableColumn>
           <TableColumn align="center">ACTIONS</TableColumn>
@@ -79,6 +80,7 @@ export default function InstitutionsTable({
         <TableBody emptyContent="No institutions found">
           {institutions.map((institution) => (
             <TableRow key={institution._id}>
+              <TableCell><img className="rounded-full max-w-16 max-h-16 object-contain"src={institution.img || '-'}/></TableCell>
               <TableCell className="font-medium">{institution.name}</TableCell>
               <TableCell>{institution.country || '-'}</TableCell>
               <TableCell>
