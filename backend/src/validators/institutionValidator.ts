@@ -29,5 +29,11 @@ export const institutionSchema = Joi.object({
     .allow(null, '')
     .messages({
       'string.base': 'El país debe ser una cadena de texto o estar vacío.'
+    }),
+  img: Joi.string()
+    .optional()
+    .allow(null, '')
+    .messages({
+      'string.base': 'Se necesita una dirección de imagen válida'
     })
 });
