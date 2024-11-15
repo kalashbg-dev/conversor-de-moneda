@@ -39,14 +39,14 @@ export const en = {
     tooltip_description:
       "Live rates vary minute to minute. The quotes you receive here will differ from your final trade amount.",
     reset_button: "Reset",
-    available_rates: {
-      title: "Available exchange rates",
-      currency_selector: {
-        label: "Select currency",
-        search_label: "Search",
-      },
-    },
+},
+available_rates: {
+  title: "Available exchange rates",
+  currency_selector: {
+    label: "Select currency",
+    search_label: "Search",
   },
+},
   exchange_rate_details: {
     title: "Exchange Rate Details",
     from: "From Currency",

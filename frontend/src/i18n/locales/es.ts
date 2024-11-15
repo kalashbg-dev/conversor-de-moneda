@@ -39,12 +39,12 @@ export const es = {
     tooltip_description:
       "Las tasas en vivo varían minuto a minuto. Las cotizaciones que recibas aquí pueden diferir del monto final de tu transacción.",
     reset_button: "Restablecer",
-    available_rates: {
-      title: "Tasas de cambio disponibles",
-      currency_selector: {
-        label: "Seleccionar moneda",
-        search_label: "Buscar",
-      },
+  },
+  available_rates: {
+    title: "Tasas de cambio disponibles",
+    currency_selector: {
+      label: "Seleccionar moneda",
+      search_label: "Buscar",
     },
   },
   exchange_rate_details: {
