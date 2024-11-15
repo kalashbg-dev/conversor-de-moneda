@@ -14,7 +14,11 @@ import { InstitutionSelect } from "./ConversionConverterComponents/InstitutionSe
 import { ConversionControls } from "./ConversionConverterComponents/ConversionControls";
 import { ConversionResult } from "./ConversionConverterComponents/ConversionResult";
 
+import { useTranslation } from "react-i18next";
+
 export function CurrencyConverter() {
+  const {t} = useTranslation();
+
   const [amount, setAmount] = useState<string>("");
   const [currencyFrom, setCurrencyFrom] = useState<string>("");
   const [currencyTo, setCurrencyTo] = useState<string>("");
@@ -155,7 +159,7 @@ export function CurrencyConverter() {
           {isAuthenticated && (
             <div className="institute-selector-container">
               <InstitutionSelect
-                label="Institution (Optional)"
+                label={t('converter.institute_selector.label')}
                 institutions={institutions as Institution[]}
                 selectedInstitution={selectedInstitution}
                 onSelect={setSelectedInstitution}
