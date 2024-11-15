@@ -149,7 +149,7 @@ export function CurrencyConverter() {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto p-8">
+    <Card className="w-full max-w-3xl card-min-w mx-auto p-8">
       <CardBody className="gap-6 p-4 sm:p-6">
         <div className="flex flex-col gap-6">
           {isAuthenticated && (
