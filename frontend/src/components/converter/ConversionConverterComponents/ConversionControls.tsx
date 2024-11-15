@@ -5,6 +5,7 @@ import { CurrencySelector } from "./CurrencySelector";
 import { SwapButton } from "./SwapButton";
 import type { ExchangeRate, InstitutionExchangeRate } from "../types";
 import { getAvailableFromCurrencies, getAvailableToCurrencies } from "../utils";
+import { useTranslation } from "react-i18next";
 
 interface ConversionControlsProps {
   amount: string;
@@ -31,6 +32,8 @@ export function ConversionControls({
   onCurrencyFromChange,
   onCurrencyToChange,
 }: ConversionControlsProps) {
+  const { t } = useTranslation();
+
   const availableFromCurrencies = getAvailableFromCurrencies(
     selectedInstitution,
     institutionalRates,
@@ -70,7 +73,7 @@ export function ConversionControls({
       <div className="w-full md:w-[45%] space-y-2">
         <div className="currency-input">
           <div className="flex gap-2">
-            <AmountInput type="number" label="Amount" value={amount} onChange={onAmountChange} />
+            <AmountInput type="number" label={t('converter.from_label')} value={amount} onChange={onAmountChange} />
             <div className="divider"></div>
             <CurrencySelector
               value={currencyFrom}
@@ -102,7 +105,7 @@ export function ConversionControls({
                 <span className="text-default-400">Result</span>
               )}
             </div> */}
-            <AmountInput type="text" label="Converted to" value={result?.toFixed(2)} onChange={onAmountChange} readOnly={true} />
+            <AmountInput type="text" label={t('converter.to_label')} value={result?.toFixed(2)} onChange={onAmountChange} readOnly={true} />
             <div className="divider"></div>
             <CurrencySelector
               value={currencyTo}

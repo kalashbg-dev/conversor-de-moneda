@@ -1,5 +1,5 @@
 // import { Select, SelectItem } from "@nextui-org/react";
-
+import { useTranslation } from "react-i18next";
 interface Institution {
   _id: string;
   name: string;
@@ -20,6 +20,8 @@ export function InstitutionSelect({
   selectedInstitution,
   onSelect,
 }: InstitutionSelectProps) {
+
+  const {t} = useTranslation();
 
   function getInstituteImg() {
     let img;
@@ -45,7 +47,7 @@ export function InstitutionSelect({
       <label className="text-small">{label}</label>
       
       <select value={selectedInstitution} onChange={(e) => onSelect(e.target.value)}>
-        <option value="">Select an institution</option>
+        <option value="">{t('converter.institute_selector.default_option')}</option>
         {institutions.map((institution) => (
           <option key={institution._id} value={institution._id}>
             {institution.name}

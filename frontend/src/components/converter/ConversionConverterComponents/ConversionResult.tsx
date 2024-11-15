@@ -2,6 +2,8 @@ import { Button } from "@nextui-org/react";
 import { RotateCcw } from "lucide-react";
 import { TooltipInfo } from "./TooltipInfo";
 import { getGMTTime } from "../utils";
+import { useTranslation } from 'react-i18next';
+
 
 interface ConversionResultProps {
   baseRate: number | null;
@@ -16,6 +18,9 @@ export function ConversionResult({
   currencyTo,
   onReset,
 }: ConversionResultProps) {
+
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col md:flex-row justify-between gap-2">
       {baseRate !== null && currencyFrom && currencyTo && (
@@ -40,7 +45,7 @@ export function ConversionResult({
           startContent={<RotateCcw size={18} />}
           className="h-12 bg-primary-600 dark:bg-primary-500 text-white font-medium"
         >
-          Reset
+          {t('converter.reset_button')}
         </Button>
       </div>
     </div>
