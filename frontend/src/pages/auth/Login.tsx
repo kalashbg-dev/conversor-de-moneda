@@ -38,7 +38,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">
-      <Card className="w-full max-w-md bg-white dark:bg-gray-800 shadow-sm border border-surface-200 dark:border-gray-700">
+      <Card className="w-full max-w-md bg-white dark:bg-gray-800 shadow-2xl border border-surface-200 dark:border-gray-700">
         <CardHeader className="flex flex-col gap-3 bg-primary-50 dark:bg-gray-900 border-b border-surface-200 dark:border-gray-700">
           <h1 className="text-xl font-semibold text-center w-full py-2 dark:text-white">Welcome Back</h1>
         </CardHeader>
