@@ -70,14 +70,14 @@ export default function ExchangeRateHistory() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
+      <div className="flex flex-col items-center justify-center h-96 gap-4 ">
         <Card>
           <CardBody className="py-8 px-12 flex flex-col items-center gap-4">
             <div className="p-3 rounded-full bg-danger/10">
               <History className="text-danger" size={24} />
             </div>
             <p className="text-danger text-lg font-medium">
-            {(error as { response?: { data?: { error?: string } } }).response?.data?.error || 'Failed to load exchange rate history'}
+            {(error as { response?: { data?: { error?: string } } }).response?.data?.error || 'You need to be logged in to view exchange rate history'}
             </p>
           </CardBody>
         </Card>
@@ -86,7 +86,7 @@ export default function ExchangeRateHistory() {
   }
 
   return (
-    <div className="p-6">
+    <div className="container mx-auto px-4 py-8">
       <Card className="mb-6">
         <CardBody className="flex flex-row justify-between items-center">
           <div className="flex items-center gap-3">

@@ -22,6 +22,13 @@ const router = Router();
  *   description: Gestión de instituciones
  */
 
+/**
+ * @swagger
+ * tags:
+ *   name: Institutions
+ *   description: Gestión de instituciones
+ */
+
 // Rutas protegidas para crear, actualizar y eliminar instituciones
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN || Roles.USER])); // Middleware para proteger las siguientes rutas
 

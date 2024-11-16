@@ -20,10 +20,10 @@ const handleError = (
 
 // Crear una nueva institución
 export const createInstitution = async (req: Request, res: Response) => {
-  const { name, country } = req.body;
+  const { name, country, img } = req.body;
 
   // Verificar si la institución ya existe
-  const institutionExists = await Institution.findOne({ name, country });
+  const institutionExists = await Institution.findOne({ name, country, img });
   if (institutionExists) {
     handleError(
       res,
@@ -38,6 +38,7 @@ export const createInstitution = async (req: Request, res: Response) => {
     const newInstitution = new Institution({
       name,
       country,
+      img,
     });
     const savedInstitution = await newInstitution.save();
     handleResponse(res, 201, savedInstitution);
@@ -94,11 +95,11 @@ export const updateInstitution = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name, country } = req.body;
+  const { name, country, img } = req.body;
   try {
     const updatedInstitution = await Institution.findByIdAndUpdate(
       req.params.id,
-      { name, country },
+      { name, country, img },
       { new: true }
     );
     if (!updatedInstitution) {

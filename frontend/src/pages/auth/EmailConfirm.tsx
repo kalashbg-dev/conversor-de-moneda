@@ -33,7 +33,7 @@ export default function EmailConfirm() {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">
-      <Card className="w-full max-w-md bg-white shadow-sm border border-surface-200">
+      <Card className="w-full max-w-md bg-white shadow-2xl border border-surface-200">
         <CardBody className="flex flex-col items-center gap-4 p-6">
           <div className="w-full bg-primary-50 py-4 -mt-6 -mx-6 mb-6 border-b border-surface-200">
             <h1 className="text-xl font-semibold text-center">Email Confirmation</h1>

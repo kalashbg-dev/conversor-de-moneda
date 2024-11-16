@@ -59,7 +59,7 @@ export default function ConversionHistory() {
               <History className="text-danger" size={24} />
             </div>
             <p className="text-danger text-lg font-medium">
-              {(error as { response?: { data?: { error?: string } } }).response?.data?.error || 'Failed to load conversion history'}
+              {(error as { response?: { data?: { error?: string } } }).response?.data?.error || 'You need to login to see the conversion history'}
             </p>
           </CardBody>
         </Card>
@@ -68,7 +68,7 @@ export default function ConversionHistory() {
   }
 
   return (
-    <div className="p-6">
+    <div className="container mx-auto px-4 py-8">
       <Card className="mb-6">
         <CardBody className="flex flex-row justify-between items-center">
           <div className="flex items-center gap-3">
