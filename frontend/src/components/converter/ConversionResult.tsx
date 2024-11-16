@@ -3,10 +3,11 @@ import { Button } from '@nextui-org/react';
 import { RotateCcw, Info } from 'lucide-react';
 import { useConversionStore } from './stores/conversionStore';
 import { Tooltip } from '@nextui-org/react';
+import { useTranslation } from 'react-i18next';
 
 export const ConversionResult = memo(function ConversionResult() {
     const { currencyFrom, currencyTo, baseRate, reset } = useConversionStore();
-  
+    const { t } = useTranslation();
     const currentTime = new Date().toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
@@ -27,10 +28,10 @@ export const ConversionResult = memo(function ConversionResult() {
                   <div className="text-[#3D55DD] px-2 py-1 rounded-md">
                     <div className="flex flex-col gap-1">
                       <span className="text-sm font-semibold">
-                        Last updated: {currentTime} GMT
+                      {t('converter.tooltip_title')} {currentTime} GMT
                       </span>
                       <span className="text-sm">
-                        Exchange rates are updated periodically throughout the day
+                        {t('converter.tooltip_description')}
                       </span>
                     </div>
                   </div>
@@ -49,7 +50,7 @@ export const ConversionResult = memo(function ConversionResult() {
             startContent={<RotateCcw size={18} />}
             className="h-12 bg-primary-600 dark:bg-primary-500 text-white font-medium"
           >
-            Reset
+            {t('converter.reset_button')}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Button } from '@nextui-org/react';
 import { ArrowLeftRight } from 'lucide-react';
 import type { ExchangeRate, InstitutionExchangeRate } from './types';
 import './ConversionControl.css';
+import { useTranslation } from 'react-i18next';
 
 interface ConversionControlsProps {
   generalRates: ExchangeRate[];
@@ -32,6 +33,8 @@ export const ConversionControls = memo(function ConversionControls({
     setCurrencyFrom,
     setCurrencyTo,
   } = useConversionStore();
+
+  const { t } = useTranslation();
 
   /**
    * Rates actuales segun la seleccion de la institucion.
@@ -90,7 +93,7 @@ export const ConversionControls = memo(function ConversionControls({
         <div className="currency-input">
           <div className="flex gap-2">
             <div className="amount-input">
-              <label>Amount</label>
+              <label>{t('converter.from_label')}</label>
               <input
                 type="number"
                 value={amount}
@@ -131,7 +134,7 @@ export const ConversionControls = memo(function ConversionControls({
         <div className="currency-input">
           <div className="flex gap-2">
             <div className="amount-input">
-              <label>Converted</label>
+              <label>{t('converter.to_label')}</label>
               <input
                 type="text"
                 value={result?.toFixed(2) ?? ''}
