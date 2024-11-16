@@ -124,6 +124,15 @@ export default function Navbar() {
             >
             {t('menu.our_rates')}
             </DropdownItem>
+            <DropdownItem
+              key="exchange-rates"
+              startContent={<History size={18} />}
+              className="text-black"
+              as={RouterLink}
+              to="/exchange-rates/history"
+            >
+            {t('menu.rate_history')}
+            </DropdownItem>
            
             <DropdownItem
               key="conversions-history"
