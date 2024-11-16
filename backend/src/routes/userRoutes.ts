@@ -95,6 +95,8 @@ router.use(authMiddleware, roleMiddleware([Roles.ADMIN]));
  *   get:
  *     summary: Obtener todos los usuarios (solo ADMIN)
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuarios
@@ -110,6 +112,8 @@ router.get("/", userController.getAllUsers);
  *   get:
  *     summary: Obtener un usuario por ID (solo ADMIN)
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -138,6 +142,8 @@ router.get("/:id", userController.getUserById);
  *   put:
  *     summary: Actualizar un usuario por ID (solo ADMIN)
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -172,6 +178,8 @@ router.put("/:id", validateRequest(userSchema), userController.updateUser);
  *   delete:
  *     summary: Eliminar un usuario por ID (solo ADMIN)
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

@@ -15,24 +15,17 @@ import { institutionExchangeRateValidator } from "../validators/institutionExcha
 
 const router = Router();
 
-/**
- * @swagger
- * tags:
- *   name: institution Exchange Rate Routes
- *   description: Endpoints para manejo de tasas de cambios de las instituciones
- */
-
-// Rutas públicas para obtener las tasas de cambio específicas de la institución
-
 // Rutas protegidas para crear, actualizar y eliminar tasas de cambio de institución
 router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
 
 /**
  * @swagger
- * /institution-exchange-rates:
+ * /api/institutions-exchange-rates:
  *   get:
  *     summary: Obtener todas las tasas de cambio de instituciones
  *     tags: [Institution Exchange Rates]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de todas las tasas de cambio
@@ -50,10 +43,12 @@ router.get("/", getAllInstitutionExchangeRates); // Ver todas las tasas de cambi
 
 /**
  * @swagger
- * /institution-exchange-rates/{id}:
+ * /api/institutions-exchange-rates/{id}:
  *   get:
  *     summary: Obtener una tasa de cambio específica por su ID
  *     tags: [Institution Exchange Rates]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -74,10 +69,12 @@ router.get("/:id", getInstitutionExchangeRateById); // Ver una tasa de cambio es
 
 /**
  * @swagger
- * /institution-exchange-rates:
+ * /api/institutions-exchange-rates:
  *   post:
  *     summary: Crear una nueva tasa de cambio para una institución
  *     tags: [Institution Exchange Rates]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -103,10 +100,12 @@ router.post(
 
 /**
  * @swagger
- * /institution-exchange-rates/{id}:
+ * /api/institutions-exchange-rates/{id}:
  *   put:
  *     summary: Actualizar una tasa de cambio específica por su ID
  *     tags: [Institution Exchange Rates]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -139,10 +138,12 @@ router.put(
 
 /**
  * @swagger
- * /institution-exchange-rates/{id}:
+ * /api/institutions-exchange-rates/{id}:
  *   delete:
  *     summary: Eliminar una tasa de cambio específica por su ID
  *     tags: [Institution Exchange Rates]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

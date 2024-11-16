@@ -76,7 +76,7 @@ router.post("/convert", validateRequest(conversionSchema), logConversion);
  * @swagger
  * /api/conversions/history:
  *   get:
- *     summary: Obtener historial de conversiones (solo para ADMIN)
+ *     summary: Obtener historial de conversiones
  *     tags: [Conversion]
  *     security:
  *       - bearerAuth: []
@@ -108,7 +108,7 @@ router.post("/convert", validateRequest(conversionSchema), logConversion);
  */
 
 // Ruta para obtener el historial de conversiones (solo para ADMIN)
-router.use(authMiddleware, roleMiddleware([Roles.ADMIN]));
-router.get("/history", authMiddleware, getConversionHistory);
+router.use(authMiddleware, roleMiddleware([Roles.ADMIN || Roles.USER]));
+router.get("/history", getConversionHistory);
 
 export default router;

@@ -15,7 +15,7 @@ const router = Router();
 
 /**
  * @swagger
- * /exchange-rate-history:
+ * /api/exchange-rate-history:
  *   get:
  *     summary: Obtener todo el historial de tasas de cambio
  *     tags: [ExchangeRateHistory]

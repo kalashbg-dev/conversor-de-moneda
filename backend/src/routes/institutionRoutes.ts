@@ -23,14 +23,16 @@ const router = Router();
  */
 
 // Rutas protegidas para crear, actualizar y eliminar instituciones
-router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para proteger las siguientes rutas
+router.use(authMiddleware, roleMiddleware([Roles.ADMIN || Roles.USER])); // Middleware para proteger las siguientes rutas
 
 /**
  * @swagger
- * /institutions:
+ * /api/institutions:
  *   get:
  *     summary: Obtener todas las instituciones
  *     tags: [Institutions]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de todas las instituciones
@@ -46,10 +48,12 @@ router.get("/", getAllInstitutions); // Acceso público para obtener todas las i
 
 /**
  * @swagger
- * /institutions/{id}:
+ * /api/institutions/{id}:
  *   get:
  *     summary: Obtener una institución por ID
  *     tags: [Institutions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -72,10 +76,12 @@ router.get("/:id", getInstitutionById); // Acceso público para obtener una inst
 
 /**
  * @swagger
- * /institutions:
+ * /api/institutions:
  *   post:
  *     summary: Crear una nueva institución
  *     tags: [Institutions]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -93,10 +99,12 @@ router.post("/", validateRequest(institutionSchema), createInstitution);
 
 /**
  * @swagger
- * /institutions/{id}:
+ * /api/institutions/{id}:
  *   put:
  *     summary: Actualizar una institución
  *     tags: [Institutions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -121,10 +129,12 @@ router.put("/:id", validateRequest(institutionSchema), updateInstitution);
 
 /**
  * @swagger
- * /institutions/{id}:
+ * /api/institutions/{id}:
  *   delete:
  *     summary: Eliminar una institución
  *     tags: [Institutions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

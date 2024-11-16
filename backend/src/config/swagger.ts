@@ -10,10 +10,19 @@ const options = {
       version: "1.0.0",
       description: "Documentación de la API",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
 
     servers: [
       {
-        url: "http://localhost:3000/api",
+        url: "http://localhost:3000",
       },
     ],
   },

@@ -18,14 +18,14 @@ const router = Router();
  * @swagger
  * tags:
  *   name: Exchange Rates
- *   description: API for managing exchange rates
+ *   description: API para manejo de tasas de cambios
  */
 
 /**
  * @swagger
- * /exchange-rates:
+ * /api/exchange-rates:
  *   get:
- *     summary: Get all exchange rates
+ *     summary: obtener todas las tasas de cambio
  *     tags: [Exchange Rates]
  *     responses:
  *       200:
@@ -43,9 +43,9 @@ router.get("/", getAllExchangeRates); // Acceso público para ver todas las tasa
 
 /**
  * @swagger
- * /exchange-rates/{id}:
+ * /api/exchange-rates/{id}:
  *   get:
- *     summary: Get exchange rate by ID
+ *     summary: obtener tasa de cambio por ID
  *     tags: [Exchange Rates]
  *     parameters:
  *       - in: path
@@ -72,9 +72,9 @@ router.use(authMiddleware, roleMiddleware([Roles.ADMIN])); // Middleware para pr
 
 /**
  * @swagger
- * /exchange-rates:
+ * /api/exchange-rates:
  *   post:
- *     summary: Create a new exchange rate
+ *     summary: Crear nueva tasa de cambios
  *     tags: [Exchange Rates]
  *     security:
  *       - bearerAuth: []
@@ -95,9 +95,9 @@ router.post("/", validateRequest(exchangeRateSchema), createExchangeRate);
 
 /**
  * @swagger
- * /exchange-rates/{id}:
+ * /api/exchange-rates/{id}:
  *   put:
- *     summary: Update an exchange rate
+ *     summary: Actualizar tasa de cambio
  *     tags: [Exchange Rates]
  *     security:
  *       - bearerAuth: []
@@ -125,9 +125,9 @@ router.put("/:id", validateRequest(exchangeRateSchema), updateExchangeRate);
 
 /**
  * @swagger
- * /exchange-rates/{id}:
+ * /api/exchange-rates/{id}:
  *   delete:
- *     summary: Delete an exchange rate
+ *     summary: Eliminar tasa de cambios
  *     tags: [Exchange Rates]
  *     security:
  *       - bearerAuth: []

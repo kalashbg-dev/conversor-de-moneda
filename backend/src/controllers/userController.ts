@@ -234,9 +234,7 @@ export const deleteUser = async (req: Request, res: Response) => {
  *         - password
  *         - email
  *       properties:
- *         id:
- *           type: string
- *           description: ID del usuario
+
  *         username:
  *           type: string
  *           description: Nombre de usuario

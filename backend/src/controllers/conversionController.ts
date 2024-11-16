@@ -4,31 +4,11 @@ import ExchangeRate from "../models/ExchangeRate";
 import InstitutionExchangeRate from "../models/InstitutionExchangeRate";
 
 /**
- * @swagger
- * components:
- *   schemas:
- *     Conversion:
- *       type: object
- *       properties:
- *         currencyFrom:
- *           type: string
- *         currencyTo:
- *           type: string
- *         amount:
- *           type: number
- *         result:
- *           type: number
- *         exchange_rate_id:
- *           type: string
- *         institution_exchange_rate_id:
- *           type: string
- */
-
-/**
  * Realiza una conversión de moneda.
  * @param req
  * @param res
  */
+
 export const logConversion = async (
   req: Request,
   res: Response
@@ -151,3 +131,24 @@ export const getConversionHistory = async (
     });
   }
 };
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Conversion:
+ *       type: object
+ *       properties:
+ *         currencyFrom:
+ *           type: string
+ *         currencyTo:
+ *           type: string
+ *         amount:
+ *           type: number
+ *         result:
+ *           type: number
+ *         exchange_rate_id:
+ *           type: string
+ *         institution_exchange_rate_id:
+ *           type: string
+ */
