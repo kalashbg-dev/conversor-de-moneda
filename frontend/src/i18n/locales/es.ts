@@ -54,4 +54,40 @@ export const es = {
     exchange_rate: "Tasa de Cambio",
     last_updated: "Última Actualización",
   },
+  exchange_rates: {
+    table: {
+      title: "Tabla de tasas de cambio",
+      columns: {
+        id: "ID",
+        from: "DESDE",
+        to: "HASTA",
+        rate: "TASA",
+        last_update: "ÚLTIMA ACTUALIZACIÓN",
+        actions: "ACCIONES"
+      },
+      actions: {
+        edit: "Editar tasa",
+        delete: "Eliminar tasa"
+      },
+      empty: "No se encontraron tasas de cambio"
+    },
+    modal: {
+      from_currency: "Moneda origen (ej., EUR)",
+      to_currency: "Moneda destino (ej., EUR)",
+      currency_code_help: "Código de 3 letras",
+      rate: "Tasa de cambio",
+      decimals_help: "Hasta 4 decimales",
+      institution: "Institución",
+      select_institution: "Seleccione una institución",
+      buttons: {
+        cancel: "Cancelar",
+        create: "Crear",
+        update: "Actualizar"
+      }
+    },
+    grid: {
+      no_results: "No se encontraron tasas de cambio",
+      no_results_for: "No se encontraron tasas de cambio para \"{query}\""
+    }
+  }
 };

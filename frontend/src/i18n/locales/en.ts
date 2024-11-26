@@ -54,4 +54,40 @@ available_rates: {
     exchange_rate: "Exchange Rate",
     last_updated: "Last Updated",
   },
+  exchange_rates: {
+    table: {
+      title: "Exchange rates table",
+      columns: {
+        id: "ID",
+        from: "FROM",
+        to: "TO",
+        rate: "RATE",
+        last_update: "LAST UPDATE",
+        actions: "ACTIONS"
+      },
+      actions: {
+        edit: "Edit rate",
+        delete: "Delete rate"
+      },
+      empty: "No exchange rates found"
+    },
+    modal: {
+      from_currency: "From Currency (e.g., EUR)",
+      to_currency: "To Currency (e.g., EUR)",
+      currency_code_help: "3-letter currency code",
+      rate: "Exchange Rate",
+      decimals_help: "Up to 4 decimal places",
+      institution: "Institution",
+      select_institution: "Select an institution",
+      buttons: {
+        cancel: "Cancel",
+        create: "Create",
+        update: "Update"
+      }
+    },
+    grid: {
+      no_results: "No exchange rates found",
+      no_results_for: "No exchange rates found for \"{query}\""
+    }
+  }
 };
