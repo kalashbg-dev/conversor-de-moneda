@@ -12,7 +12,6 @@ import ExchangeRateDetails from './pages/ExchangeRateDetails';
 import AdminExchangeRates from './pages/admin/ExchangeRates';
 import ExchangeRateHistory from './pages/ExchangeRateHistory';
 import ProtectedRoute from './components/protectedRoute';
-import { Roles } from './constants/roles';
 import ConversionHistory from './pages/ConversionHistory';
 
 
@@ -46,7 +45,7 @@ export default function App() {
         <Route 
           path="/admin/exchange-rates" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <AdminExchangeRates />
             </ProtectedRoute>
           } 
@@ -54,7 +53,7 @@ export default function App() {
         <Route 
           path="/institutions" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <Institutions />
             </ProtectedRoute>
           } 
@@ -62,7 +61,7 @@ export default function App() {
         <Route 
           path="/users" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <Users />
             </ProtectedRoute>
           } 
@@ -70,7 +69,7 @@ export default function App() {
         <Route 
           path="/exchange-rates/institutions" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <InstitutionExchangeRates />
             </ProtectedRoute>
           } 

@@ -25,6 +25,21 @@ import { Roles } from "@/constants/roles";
 import { useTranslation } from 'react-i18next'; // useTranslation para manejar el idioma
 import LanguageSelector from './LanguageSelector'; // Componente LanguageSelector para el selector de idioma 
 
+// Crear un componente personalizado para los DropdownItems con RouterLink
+const NavDropdownItem = ({ to, children, startContent }: {
+  to: string;
+  children: React.ReactNode;
+  startContent?: React.ReactNode;
+}) => (
+  <DropdownItem>
+    <div className="flex items-center gap-2 text-black w-full">
+      {startContent}
+      <RouterLink to={to} className="w-full">
+        {children}
+      </RouterLink>
+    </div>
+  </DropdownItem>
+);
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuthStore();
@@ -116,33 +131,25 @@ export default function Navbar() {
                 Institution Rates
               </DropdownItem> */}
 
-            <DropdownItem
-              startContent={<DollarSign size={18} />}
-              as={RouterLink}
-              className="text-black"
+            <NavDropdownItem
               to="/exchange-rates"
+              startContent={<DollarSign size={18} />}
             >
-            {t('menu.our_rates')}
-            </DropdownItem>
-            <DropdownItem
-              key="exchange-rates"
-              startContent={<History size={18} />}
-              className="text-black"
-              as={RouterLink}
+              {t('menu.our_rates')}
+            </NavDropdownItem>
+            <NavDropdownItem
               to="/exchange-rates/history"
-            >
-            {t('menu.rate_history')}
-            </DropdownItem>
-           
-            <DropdownItem
-              key="conversions-history"
               startContent={<History size={18} />}
-              className="text-black"
-              as={RouterLink}
+            >
+              {t('menu.rate_history')}
+            </NavDropdownItem>
+           
+            <NavDropdownItem
               to="/conversions/history"
+              startContent={<History size={18} />}
             >
               {t('menu.conversion_history')}
-            </DropdownItem>
+            </NavDropdownItem>
             {/* {isAuthenticated && (
               <>
               <DropdownItem
@@ -224,44 +231,33 @@ export default function Navbar() {
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Admin actions" className="w-[200px]">
-              <DropdownItem
-                key="institutions"
-                startContent={<Building2 size={18} />}
-                as={RouterLink}
-                className="text-black"
+              <NavDropdownItem
                 to="/institutions"
+                startContent={<Building2 size={18} />}
               >
-              {t('admin_menu.institutions')}
+                {t('admin_menu.institutions')}
+              </NavDropdownItem>
 
-              </DropdownItem>
-              <DropdownItem
-                key="users"
-                startContent={<Users size={18} />}
-                as={RouterLink}
-                className="text-black"
+              <NavDropdownItem
                 to="/users"
+                startContent={<Users size={18} />}
               >
                 {t('admin_menu.users')}
+              </NavDropdownItem>
 
-              </DropdownItem>
-              <DropdownItem
-                key="exchange-rates"
-                startContent={<DollarSign size={18} />}
-                as={RouterLink}
-                className="text-black"
+              <NavDropdownItem
                 to="/admin/exchange-rates"
+                startContent={<DollarSign size={18} />}
               >
                 {t('admin_menu.exchange_rates')}
-              </DropdownItem>
-              <DropdownItem
-                key="institution-rates"
-                startContent={<DollarSign size={18} />}
-                as={RouterLink}
-                className="text-black"
+              </NavDropdownItem>
+
+              <NavDropdownItem
                 to="/exchange-rates/institutions"
+                startContent={<DollarSign size={18} />}
               >
                 {t('admin_menu.institution_rates')}
-              </DropdownItem>
+              </NavDropdownItem>
             </DropdownMenu>
           </Dropdown>
         )}

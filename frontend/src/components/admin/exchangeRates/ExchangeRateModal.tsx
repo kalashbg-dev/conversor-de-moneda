@@ -15,8 +15,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DollarSign } from 'lucide-react';
 import * as yup from 'yup';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { exchangeRateApi } from '@/services/api/exchangeRates';
-import type { ExchangeRate } from '@/types/api';
+import { institutionExchangeRateApi } from '@/services/api/institutionExchangeRates';
+import type { InstitutionExchangeRate, ApiError } from '@/types/api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
@@ -33,11 +33,13 @@ const schema = yup.object({
   exchangeRate: yup.number()
     .required('Exchange rate is required')
     .positive('Exchange rate must be positive')
-    .max(9999.9999, 'Exchange rate is too high')
+    .max(9999.9999, 'Exchange rate is too high'),
+  institution: yup.string()
+    .required('Institution is required')
 }).required();
 
 interface ExchangeRateModalProps {
-  rate: ExchangeRate | null;
+  rate: InstitutionExchangeRate | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -46,6 +48,7 @@ type FormData = {
   currencyFrom: string;
   currencyTo: string;
   exchangeRate: number;
+  institution: string;
 };
 
 export default function ExchangeRateModal({ 
@@ -62,7 +65,8 @@ export default function ExchangeRateModal({
     defaultValues: {
       currencyFrom: '',
       currencyTo: '',
-      exchangeRate: 1.0
+      exchangeRate: 1.0,
+      institution: ''
     }
   });
 
@@ -72,20 +76,21 @@ export default function ExchangeRateModal({
         ...data,
         currencyFrom: data.currencyFrom.toUpperCase(),
         currencyTo: data.currencyTo.toUpperCase(),
-        exchangeRate: Number(data.exchangeRate)
+        exchangeRate: Number(data.exchangeRate),
+        institution: data.institution
       };
       
-      if (rate) {
-        return exchangeRateApi.update(rate._id, formattedData);
+      if (rate?._id) {
+        return institutionExchangeRateApi.update(rate._id, formattedData);
       }
-      return exchangeRateApi.create(formattedData);
+      return institutionExchangeRateApi.create(formattedData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-exchange-rates'] });
+      queryClient.invalidateQueries({ queryKey: ['institution-exchange-rates'] });
       toast.success(`Exchange rate ${rate ? 'updated' : 'created'} successfully`);
       handleClose();
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       if (error.response?.status === 401) {
         logout();
         navigate('/users/login');
@@ -98,15 +103,17 @@ export default function ExchangeRateModal({
   useEffect(() => {
     if (rate) {
       reset({
-        currencyFrom: rate.currencyFrom,
-        currencyTo: rate.currencyTo,
-        exchangeRate: Number(rate.exchangeRate)
+        currencyFrom: rate.currencyFrom as string,
+        currencyTo: rate.currencyTo as string,
+        exchangeRate: Number(rate.exchangeRate),
+        institution: rate.institution._id
       });
     } else {
       reset({
         currencyFrom: '',
         currencyTo: '',
-        exchangeRate: 1.0
+        exchangeRate: 1.0,
+        institution: ''
       });
     }
   }, [rate, reset]);

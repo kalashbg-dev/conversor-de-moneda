@@ -19,21 +19,21 @@ import {
 import { Pencil, Trash2, AlertTriangle, Copy } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { exchangeRateApi } from '@/services/api/exchangeRates';
-import type { ExchangeRate } from '@/types/api';
+import type { InstitutionExchangeRate, ApiError } from '@/types/api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { useState } from 'react';
 
 interface ExchangeRatesTableProps {
-  rates: ExchangeRate[];
-  onEdit: (rate: ExchangeRate) => void;
+  rates: InstitutionExchangeRate[];
+  onEdit: (rate: InstitutionExchangeRate) => void;
 }
 
 export default function ExchangeRatesTable({ rates, onEdit }: ExchangeRatesTableProps) {
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    rate: ExchangeRate | null;
+    rate: InstitutionExchangeRate | null;
   }>({
     isOpen: false,
     rate: null
@@ -44,13 +44,15 @@ export default function ExchangeRatesTable({ rates, onEdit }: ExchangeRatesTable
   const { logout } = useAuthStore();
 
   const deleteMutation = useMutation({
-    mutationFn: exchangeRateApi.delete,
+    mutationFn: async (id: string) => {
+      return exchangeRateApi.delete(id);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-exchange-rates'] });
       toast.success('Exchange rate deleted successfully');
       handleCloseDeleteModal();
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       if (error.response?.status === 401) {
         logout();
         navigate('/users/login');
@@ -60,7 +62,7 @@ export default function ExchangeRatesTable({ rates, onEdit }: ExchangeRatesTable
     }
   });
 
-  const handleDeleteClick = (rate: ExchangeRate) => {
+  const handleDeleteClick = (rate: InstitutionExchangeRate) => {
     setDeleteModal({
       isOpen: true,
       rate
