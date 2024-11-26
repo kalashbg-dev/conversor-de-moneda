@@ -8,15 +8,18 @@ import {
   Button,
   Input,
   Card,
-  CardBody
+  CardBody,
+  Select,
+  SelectItem,
 } from '@nextui-org/react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DollarSign } from 'lucide-react';
 import * as yup from 'yup';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { institutionExchangeRateApi } from '@/services/api/institutionExchangeRates';
-import type { InstitutionExchangeRate, ApiError } from '@/types/api';
+import { institutionApi } from '@/services/api/institutions';
+import type { InstitutionExchangeRate, ApiError, Institution } from '@/types/api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
@@ -99,6 +102,20 @@ export default function ExchangeRateModal({
       }
     }
   });
+
+  const { data: institutions = [], error: institutionsError } = useQuery<Institution[]>({
+    queryKey: ['institutions'],
+    queryFn: async () => {
+      const response = await institutionApi.getAll();
+      return response.data;
+    }
+  });
+
+  useEffect(() => {
+    if (institutionsError) {
+      toast.error('Failed to load institutions');
+    }
+  }, [institutionsError]);
 
   useEffect(() => {
     if (rate) {
@@ -232,6 +249,36 @@ export default function ExchangeRateModal({
                         description: "text-xs text-default-400"
                       }}
                     />
+                  )}
+                />
+
+                <Controller
+                  name="institution"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      label="Institution"
+                      placeholder="Select an institution"
+                      errorMessage={errors.institution?.message}
+                      isDisabled={isSubmitting}
+                      classNames={{
+                        label: "text-sm font-medium text-default-700 dark:text-gray-300",
+                        trigger: "border-surface-300 dark:border-gray-600",
+                        value: "text-sm dark:text-white",
+                        description: "text-xs text-default-400"
+                      }}
+                    >
+                      {institutions.map((institution) => (
+                        <SelectItem 
+                          key={institution._id} 
+                          value={institution._id}
+                          className="text-sm"
+                        >
+                          {institution.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
                   )}
                 />
               </CardBody>
