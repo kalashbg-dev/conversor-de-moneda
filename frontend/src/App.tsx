@@ -7,13 +7,12 @@ import EmailConfirm from './pages/auth/EmailConfirm';
 import Institutions from './pages/admin/Institutions';
 import Users from './pages/admin/Users';
 import InstitutionExchangeRates from './pages/admin/InstitutionExchangeRates';
-import ExchangeRates from './pages/ExchangeRates';
+import ExchangeRates from './pages/menu/ExchangeRates';
 import ExchangeRateDetails from './pages/ExchangeRateDetails';
 import AdminExchangeRates from './pages/admin/ExchangeRates';
-import ExchangeRateHistory from './pages/ExchangeRateHistory';
+import ExchangeRateHistory from './pages/menu/ExchangeRateHistory';
 import ProtectedRoute from './components/protectedRoute';
-import { Roles } from './constants/roles';
-import ConversionHistory from './pages/ConversionHistory';
+import ConversionHistory from './pages/menu/ConversionHistory';
 
 
 export default function App() {
@@ -46,7 +45,7 @@ export default function App() {
         <Route 
           path="/admin/exchange-rates" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <AdminExchangeRates />
             </ProtectedRoute>
           } 
@@ -54,7 +53,7 @@ export default function App() {
         <Route 
           path="/institutions" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <Institutions />
             </ProtectedRoute>
           } 
@@ -62,7 +61,7 @@ export default function App() {
         <Route 
           path="/users" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <Users />
             </ProtectedRoute>
           } 
@@ -70,7 +69,7 @@ export default function App() {
         <Route 
           path="/exchange-rates/institutions" 
           element={
-            <ProtectedRoute roles={[Roles.ADMIN]}>
+            <ProtectedRoute roles={['ADMIN']}>
               <InstitutionExchangeRates />
             </ProtectedRoute>
           } 
