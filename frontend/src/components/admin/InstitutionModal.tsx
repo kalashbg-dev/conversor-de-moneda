@@ -16,7 +16,7 @@ import { Building2 } from "lucide-react";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { institutionApi } from "@/services/api/institutions";
-import type { Institution } from "@/types/api";
+import type { Institution, ApiError } from "@/types/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
@@ -83,7 +83,7 @@ export default function InstitutionModal({
       );
       handleClose();
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       if (error.response?.status === 401) {
         logout();
         navigate("/users/login");
@@ -169,7 +169,7 @@ export default function InstitutionModal({
                       {...field}
                       {...register("img")}
                       label="Institution Logo"
-                      value={field.value}
+                      value={field.value?.toString() || ''}
                       variant="bordered"
                       errorMessage={errors.img?.message}
                       classNames={{
@@ -211,20 +211,20 @@ export default function InstitutionModal({
                 render={({ field }) => (
                   <Input
                     {...field}
-                  {...register("country")}
-                  label="Country"
-                  value={field.value.toUpperCase()}
-                  variant="bordered"
-                  errorMessage={errors.country?.message}
-                  isDisabled={isSubmitting}
-                  classNames={{
-                    label:
-                      "text-sm font-medium text-default-700 dark:text-gray-300",
-                    input: "text-sm dark:text-white",
-                    inputWrapper:
-                      "border-surface-300 dark:border-gray-600 hover:border-success-500 focus-within:!border-success-500",
-                  }}
-                />
+                    {...register("country")}
+                    label="Country"
+                    value={field.value?.toUpperCase() || ''}
+                    variant="bordered"
+                    errorMessage={errors.country?.message}
+                    isDisabled={isSubmitting}
+                    classNames={{
+                      label:
+                        "text-sm font-medium text-default-700 dark:text-gray-300",
+                      input: "text-sm dark:text-white",
+                      inputWrapper:
+                        "border-surface-300 dark:border-gray-600 hover:border-success-500 focus-within:!border-success-500",
+                    }}
+                  />
                 )}
                 />
               </CardBody>

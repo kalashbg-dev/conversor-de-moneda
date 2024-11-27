@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children, roles }: ProtectedRouteProps)
   const { isAuthenticated, role } = useAuthStore();
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth/login" />;
+    return <Navigate to="/users/login" />;
   }
 
   if (roles && !roles.includes(role as keyof typeof Roles)) {

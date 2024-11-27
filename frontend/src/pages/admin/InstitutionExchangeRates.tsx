@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { 
   Button,
   Spinner,
@@ -10,19 +10,20 @@ import {
 import { DollarSign, Plus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { institutionExchangeRateApi } from '@/services/api/institutionExchangeRates';
-import ExchangeRatesTable from '@/components/admin/ExchangeRatesTable';
-import ExchangeRateModal from '@/components/admin/ExchangeRateModal';
+import ExchangeRatesTable from '@/components/admin/exchangeRates/ExchangeRatesTable';
+import ExchangeRateModal from '@/components/admin/exchangeRates/ExchangeRateModal';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import type { InstitutionExchangeRate } from '@/types/api';
 
 export default function InstitutionExchangeRates() {
-  const [selectedRate, setSelectedRate] = useState(null);
+  const [selectedRate, setSelectedRate] = useState<InstitutionExchangeRate | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { logout } = useAuthStore();
 
-  const { data: rates = [], isLoading, error, refetch } = useQuery({
+  const { data: rates = [], isLoading, error, refetch } = useQuery<InstitutionExchangeRate[]>({
     queryKey: ['institution-exchange-rates'],
     queryFn: async () => {
       const response = await institutionExchangeRateApi.getAll();
@@ -41,7 +42,7 @@ export default function InstitutionExchangeRates() {
     toast.error(error.message || 'Failed to load exchange rates');
   }
 
-  const handleEdit = (rate: SetStateAction<null>) => {
+  const handleEdit = (rate: InstitutionExchangeRate) => {
     setSelectedRate(rate);
     onOpen();
   };
@@ -141,8 +142,8 @@ export default function InstitutionExchangeRates() {
         </Card>
       ) : (
         <ExchangeRatesTable 
-          rates={rates || []}
-          onEdit={(rate) => handleEdit(rate as unknown as SetStateAction<null>)}
+          rates={rates}
+          onEdit={handleEdit}
         />
       )}
 
