@@ -42,7 +42,7 @@ This project is an exchange rate converter application with management tools and
 ### ⚙️ **Installation and Setup**
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/exchange-rate-converter.git
+   git clone https://github.com/RichardFelic/currency-converter.git
    ```
 2. **Install backend and frontend dependencies:**
    ```bash
