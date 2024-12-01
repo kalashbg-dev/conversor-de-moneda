@@ -75,12 +75,13 @@ This project is an exchange rate converter application with management tools and
 4. **Start the project:**
    - **Backend:** 
      ```bash
-     npm run server
+     cd backend
+     npm run dev
      ```
    - **Frontend:** 
      ```bash
-     cd client
-     npm start
+     cd frontend
+     npm run dev
      ```
 ---
 
