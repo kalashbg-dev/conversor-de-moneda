@@ -23,7 +23,7 @@ export interface User {
 export interface ExchangeRate {
   _id: Key | null | undefined;
   currencyTo: ReactNode;
-  updatedAt(updatedAt: any): import("react").ReactNode;
+  updatedAt(date: string): ReactNode;
   exchangeRate: number;
   currencyFrom: ReactNode;
   id: string;
