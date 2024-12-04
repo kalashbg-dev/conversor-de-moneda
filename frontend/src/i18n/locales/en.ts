@@ -11,7 +11,8 @@ export const en = {
     search: "Search",
     noResults: "No results found",
     confirm: "Confirm",
-    actions: "Actions"
+    actions: "Actions",
+    update: "Update"
   },
   menu: {
     label: "Menu",
@@ -41,7 +42,8 @@ export const en = {
     registerSuccess: "Registration successful",
     confirmEmail: "Please confirm your email",
     passwordMismatch: "Passwords do not match",
-    invalidCredentials: "Invalid credentials"
+    invalidCredentials: "Invalid credentials",
+    loginRequired: "You need to login to view the history"
   },
   converter: {
     title: "Currency Converter",
@@ -89,23 +91,127 @@ export const en = {
     }
   },
   institutions: {
+    title: "Institutions",
     create: "Create Institution",
     edit: "Edit Institution",
     delete: "Delete Institution",
     deleteConfirm: "Are you sure you want to delete this institution?",
     name: "Institution Name",
     country: "Country",
-    noInstitutions: "No institutions found"
+    noInstitutions: "No institutions found",
+    firstInstitution: "Create your first institution",
+    logo: "Institution Logo",
+    columns: {
+      logo: "LOGO",
+      name: "NAME",
+      country: "COUNTRY",
+      actions: "ACTIONS"
+    },
+    tooltips: {
+      edit: "Edit institution",
+      delete: "Delete institution",
+      create: "Press Ctrl+N to create new (⌘+N on Mac)"
+    },
+    messages: {
+      createFirst: "Get started by creating your first institution. Click the button above or press Ctrl+N (⌘+N on Mac).",
+      noInstitutionsYet: "No Institutions Yet",
+      deleteWarning: "This action cannot be undone."
+    }
   },
   users: {
     create: "Create User",
     edit: "Edit User",
     delete: "Delete User",
     deleteConfirm: "Are you sure you want to delete this user?",
+    title: "Users Management",
+    columns: {
+      username: "USERNAME",
+      name: "NAME",
+      email: "EMAIL",
+      role: "ROLE",
+      status: "STATUS",
+      actions: "ACTIONS"
+    },
     status: {
       active: "Active",
       inactive: "Inactive",
       pending: "Pending Confirmation"
+    },
+    messages: {
+      noUsers: "No users registered",
+      createFirst: "Start by creating your first user"
+    },
+    tooltips: {
+      edit: "Edit user",
+      delete: "Delete user"
+    },
+    validation: {
+      username_required: "Username is required",
+      username_min: "Username must be at least 3 characters",
+      username_max: "Username must be less than 20 characters",
+      email_required: "Email is required",
+      email_invalid: "Must be a valid email",
+      name_required: "Name is required",
+      name_min: "Name must be at least 3 characters",
+      name_max: "Name must be less than 50 characters",
+      role_required: "Role is required",
+      role_invalid: "Invalid role"
+    },
+    roles: {
+      user: "User",
+      admin: "Admin"
+    }
+  },
+  conversion_history: {
+    title: "Conversion History",
+    search_placeholder: "Search by currency...",
+    no_history: "No history available",
+    no_results: "No results match your search criteria",
+    columns: {
+      from: "ORIGIN",
+      amount: "AMOUNT",
+      to: "DESTINATION",
+      result: "RESULT",
+      date: "DATE"
+    }
+  },
+  admin: {
+    exchange_rates: {
+      management: "Exchange Rates Management",
+      add: "Add Exchange Rate",
+      title: "Institutional Exchange Rates",
+      create: "Create Exchange Rate",
+      edit: "Edit Exchange Rate",
+      delete: "Delete Exchange Rate",
+      noRates: "No Exchange Rates Yet",
+      addFirst: "Add First Exchange Rate",
+      messages: {
+        createFirst: "Get started by adding your first exchange rate.",
+        tryAgain: "Try Again",
+        deleteWarning: "This action cannot be undone."
+      },
+      columns: {
+        id: "ID",
+        from: "FROM",
+        to: "TO",
+        rate: "RATE",
+        institution: "INSTITUTION",
+        lastUpdate: "LAST UPDATE",
+        actions: "ACTIONS"
+      },
+      tooltips: {
+        edit: "Edit rate",
+        delete: "Delete rate",
+        copyId: "Copy ID to clipboard"
+      },
+      form: {
+        fromCurrency: "From Currency (e.g., USD)",
+        toCurrency: "To Currency (e.g., EUR)",
+        rate: "Exchange Rate",
+        currencyCodeHelp: "3-letter currency code",
+        rateHelp: "Up to 4 decimal places",
+        institution: "Institution"
+      }
     }
   }
 };
