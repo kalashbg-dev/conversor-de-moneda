@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardBody, Spinner } from '@nextui-org/react';
 import { useConversionStore } from './stores/conversionStore';
@@ -12,7 +12,6 @@ import './ConversionControl.css';
 import { useAuthStore } from "../../stores/authStore";
 
 export function CurrencyConverter() {
-  // useConversionStore para manejar el estado de la conversion
   const {
     amount,
     currencyFrom,
@@ -24,10 +23,8 @@ export function CurrencyConverter() {
     setCurrencyTo,
   } = useConversionStore();
 
-  // useAuthStore para verificar si el usuario esta autenticado
   const { isAuthenticated } = useAuthStore();
 
-  // Consulta a la api para obtener las tasas de cambio generales
   const { data: generalRates = [], isLoading: isLoadingGeneral } = useQuery({
     queryKey: ['exchange-rates'],
     queryFn: async () => {
@@ -36,7 +33,6 @@ export function CurrencyConverter() {
     },
   });
 
-  // Consulta a la api para obtener las instituciones
   const { data: institutions = [], isLoading: isLoadingInstitutions } = useQuery({
     queryKey: ['institutions'],
     queryFn: async () => {
@@ -45,7 +41,6 @@ export function CurrencyConverter() {
     },
   });
 
-  // Consulta a la api para obtener las tasas de cambio institucionales
   const { data: institutionalRates = [], isLoading: isLoadingInstitutional } = useQuery({
     queryKey: ['institution-exchange-rates'],
     queryFn: async () => {
@@ -54,7 +49,6 @@ export function CurrencyConverter() {
     },
   });
 
-  // useMutation para hacer la conversion
   const convertMutation = useConversion((data) => {
     setResult(data.result);
     if (data.amount > 0) {
@@ -62,7 +56,6 @@ export function CurrencyConverter() {
     }
   });
 
-  // useMemo para obtener las tasas de cambio actuales
   const currentRates = useMemo(() => 
     selectedInstitution 
       ? institutionalRates.filter(rate => rate.institution._id === selectedInstitution)
@@ -70,7 +63,6 @@ export function CurrencyConverter() {
     [selectedInstitution, institutionalRates, generalRates]
   );
 
-  // useMemo para obtener la tasa de cambio actual
   const currentRate = useMemo(() => 
     currentRates.find(
       rate => rate.currencyFrom === currencyFrom && rate.currencyTo === currencyTo
@@ -78,26 +70,24 @@ export function CurrencyConverter() {
     [currentRates, currencyFrom, currencyTo]
   );
 
-  // useEffect para inicializar las monedas
-  useEffect(() => {
-    if (currentRates.length === 0) return;
+  const initializeCurrencies = useCallback(() => {
+    if (currentRates.length > 0) {
+      const firstRate = currentRates[0];
+      if (!currencyFrom) {
+        setCurrencyFrom(firstRate.currencyFrom);
+      }
 
-    const firstRate = currentRates[0];
-    if (!currencyFrom) {
-      setCurrencyFrom(firstRate.currencyFrom);
+      const availableTo = currentRates
+        .filter(rate => rate.currencyFrom === (currencyFrom || firstRate.currencyFrom))
+        .map(rate => rate.currencyTo);
+
+      if (availableTo.length > 0 && !currencyTo) {
+        setCurrencyTo(availableTo[0]);
+      }
     }
+  }, [currentRates, currencyFrom, currencyTo, setCurrencyFrom, setCurrencyTo]);
 
-    const availableTo = currentRates
-      .filter(rate => rate.currencyFrom === (currencyFrom || firstRate.currencyFrom))
-      .map(rate => rate.currencyTo);
-
-    if (availableTo.length > 0 && !currencyTo) {
-      setCurrencyTo(availableTo[0]);
-    }
-  }, [currentRates, selectedInstitution]);
-
-  // useEffect para hacer la conversion
-  useEffect(() => {
+  const performConversion = useCallback(() => {
     if (!amount || !currencyFrom || !currencyTo || !currentRate) {
       setResult(null);
       setBaseRate(null);
@@ -111,23 +101,27 @@ export function CurrencyConverter() {
       return;
     }
 
-    const timer = setTimeout(() => {
-      const conversionData = {
-        amount: numAmount,
-        currencyFrom,
-        currencyTo,
-        ...(selectedInstitution && currentRate && {
-          institution_exchange_rate_id: currentRate._id,
-        }),
-      };
+    const conversionData = {
+      amount: numAmount,
+      currencyFrom,
+      currencyTo,
+      ...(selectedInstitution && currentRate && {
+        institution_exchange_rate_id: currentRate._id,
+      }),
+    };
 
-      convertMutation.mutate(conversionData);
-    }, 500);
+    convertMutation.mutate(conversionData);
+  }, [amount, currencyFrom, currencyTo, currentRate, selectedInstitution, setResult, setBaseRate, convertMutation]);
 
+  useEffect(() => {
+    initializeCurrencies();
+  }, [initializeCurrencies]);
+
+  useEffect(() => {
+    const timer = setTimeout(performConversion, 500);
     return () => clearTimeout(timer);
-  }, [amount, currencyFrom, currencyTo, currentRate, selectedInstitution]);
+  }, [performConversion]);
 
-  // Si esta cargando, muestra un spinner
   if (isLoadingGeneral || isLoadingInstitutions || isLoadingInstitutional) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -141,7 +135,7 @@ export function CurrencyConverter() {
       <Card className="w-full max-w-3xl card-min-w mx-auto p-8">
         <CardBody className="gap-6 p-4 sm:p-6">
           <div className="flex flex-col gap-6">
-            {institutions.length > 0 && !!isAuthenticated &&(
+            {institutions.length > 0 && isAuthenticated && (
               <InstitutionSelect
                 institutions={institutions}
                 selectedInstitution={selectedInstitution}
@@ -160,3 +154,4 @@ export function CurrencyConverter() {
     </div>
   );
 }
+

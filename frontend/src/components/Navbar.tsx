@@ -25,7 +25,6 @@ import { Roles } from "@/constants/roles";
 import { useTranslation } from 'react-i18next'; // useTranslation para manejar el idioma
 import LanguageSelector from './LanguageSelector'; // Componente LanguageSelector para el selector de idioma 
 
-
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuthStore();
   // const { isDark, toggle } = useThemeStore();
@@ -118,9 +117,8 @@ export default function Navbar() {
 
             <DropdownItem
               startContent={<DollarSign size={18} />}
-              as={RouterLink}
               className="text-black"
-              to="/exchange-rates"
+              onClick={() => navigate('/exchange-rates')}
             >
             {t('menu.our_rates')}
             </DropdownItem>
@@ -128,20 +126,17 @@ export default function Navbar() {
               key="exchange-rates"
               startContent={<History size={18} />}
               className="text-black"
-              as={RouterLink}
-              to="/exchange-rates/history"
+              onClick={() => navigate('/exchange-rates/history')}
             >
             {t('menu.rate_history')}
             </DropdownItem>
-           
             <DropdownItem
               key="conversions-history"
               startContent={<History size={18} />}
               className="text-black"
-              as={RouterLink}
-              to="/conversions/history"
+              onClick={() => navigate('/conversions/history')}
             >
-              {t('menu.conversion_history')}
+            {t('menu.conversion_history')}
             </DropdownItem>
             {/* {isAuthenticated && (
               <>
@@ -227,9 +222,8 @@ export default function Navbar() {
               <DropdownItem
                 key="institutions"
                 startContent={<Building2 size={18} />}
-                as={RouterLink}
                 className="text-black"
-                to="/institutions"
+                onClick={() => navigate('/institutions')}
               >
               {t('admin_menu.institutions')}
 
@@ -237,9 +231,8 @@ export default function Navbar() {
               <DropdownItem
                 key="users"
                 startContent={<Users size={18} />}
-                as={RouterLink}
                 className="text-black"
-                to="/users"
+                onClick={() => navigate('/users')}
               >
                 {t('admin_menu.users')}
 
@@ -247,18 +240,16 @@ export default function Navbar() {
               <DropdownItem
                 key="exchange-rates"
                 startContent={<DollarSign size={18} />}
-                as={RouterLink}
                 className="text-black"
-                to="/admin/exchange-rates"
+                onClick={() => navigate('/admin/exchange-rates')}
               >
                 {t('admin_menu.exchange_rates')}
               </DropdownItem>
               <DropdownItem
                 key="institution-rates"
                 startContent={<DollarSign size={18} />}
-                as={RouterLink}
                 className="text-black"
-                to="/exchange-rates/institutions"
+                onClick={() => navigate('/exchange-rates/institutions')}
               >
                 {t('admin_menu.institution_rates')}
               </DropdownItem>

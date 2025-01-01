@@ -12,12 +12,12 @@ const initialState = {
 
 export const useConversionStore = create<ConversionStore>((set, get) => ({
   ...initialState,
-  setAmount: (amount) => set({ amount }),
-  setCurrencyFrom: (currencyFrom) => set({ currencyFrom }),
-  setCurrencyTo: (currencyTo) => set({ currencyTo }),
-  setSelectedInstitution: (selectedInstitution) => set({ selectedInstitution }),
-  setResult: (result) => set({ result }),
-  setBaseRate: (baseRate) => set({ baseRate }),
+  setAmount: (amount: string) => set({ amount }),
+  setCurrencyFrom: (currencyFrom: string) => set({ currencyFrom }),
+  setCurrencyTo: (currencyTo: string) => set({ currencyTo }),
+  setSelectedInstitution: (selectedInstitution: string) => set({ selectedInstitution }),
+  setResult: (result: number | null) => set({ result }),
+  setBaseRate: (baseRate: number | null) => set({ baseRate }),
   reset: () => {
     const { currencyFrom, currencyTo } = get();
     set({
